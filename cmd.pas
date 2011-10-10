@@ -122,8 +122,8 @@ begin
         end else if nm = 'explain' then begin
             Expression;
             repeat
-                Writeln(ReadExplainment)
-            until not ExplainmentAvailable;
+                Writeln(ReadExplanation)
+            until not ExplanationAvailable;
         end else if nm = 'nyan' then Nyan
         else Outhelp(nm);
     end

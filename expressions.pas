@@ -97,9 +97,9 @@ begin
         vv := GetVar(vn);
         SetVar(vn, x);
         ExplainFuncEnter(name,vn,x);
-        IndentExplainments;
+        IndentExplanations;
         Result := Expression;
-        UnindentExplainments;
+        UnindentExplanations;
         ExplainFuncLeave(name,vn,x,result);
         SetVar(vn, vv);
         PopBuffer;
@@ -221,9 +221,9 @@ begin
       SetVar('xn',xn);
       PushPointer;
       ExplainIterEnter(xn);
-      IndentExplainments;
+      IndentExplanations;
       xn := Expression;
-      UnindentExplainments;
+      UnindentExplanations;
       ExplainIterLeave(xn);
       p := ReadPointer;
       rl := look;

@@ -46,7 +46,7 @@ begin
     finally
         Close(f);
     end;
-    ClearExplainments
+    ClearExplanations
 end;
 
 procedure StartInterpreter;
@@ -100,7 +100,7 @@ begin
                 Answer := x
             end;
             Writeln;
-            ClearExplainments;
+            ClearExplanations;
         until q;
         successful := true;
     except

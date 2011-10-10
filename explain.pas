@@ -26,12 +26,12 @@ uses prayerlist, sysutils, cradle;
 type
     TExplainList = specialize TPrayerList<string>;
 
-function ReadExplainment: string;
-function ExplainmentAvailable: Boolean;
+function ReadExplanation: string;
+function ExplanationAvailable: Boolean;
 procedure ExplainMe(const s: string);
-procedure ClearExplainments;
-procedure IndentExplainments;
-procedure UnindentExplainments;
+procedure ClearExplanations;
+procedure IndentExplanations;
+procedure UnindentExplanations;
 
 procedure ExplainBinCoef(const n,k: extended);
 procedure ExplainAdd(const a,b:extended);
@@ -69,7 +69,7 @@ begin
         Result += '  ';
 end;
 
-function ReadExplainment: string;
+function ReadExplanation: string;
 begin
     if count > 0 then begin
         Result := fifo[0];
@@ -78,7 +78,7 @@ begin
     end else Result := 'Nothing to explain'
 end;
 
-function ExplainmentAvailable: Boolean;
+function ExplanationAvailable: Boolean;
 begin
     Result := count > 0;
 end;
@@ -89,18 +89,18 @@ begin
     Inc(count);
 end;
 
-procedure ClearExplainments;
+procedure ClearExplanations;
 begin
     fifo.Clear;
     count := 0;
 end;
 
-procedure IndentExplainments;
+procedure IndentExplanations;
 begin
     Inc(ind)
 end;
 
-procedure UnindentExplainments;
+procedure UnindentExplanations;
 begin
     if ind > 0 then
         Dec(ind)
