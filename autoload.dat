@@ -1,0 +1,60 @@
+[!raresqrt(nonzero a)] iterate(?(a; 1): (xn+(a/xn))/2)
+[!raresqrt(0)] 0
+[!SquareRoot(nonzero a)] _sqrt(a)
+[!SquareRoot(0)] 0
+[!sqrt(a)] raresqrt(a)
+[!intvsqrt(a)] zero(x: x^2-a)
+[!rarecbrt(nonzero a)] iterate(?(a; 1): (2*xn^3+a)/(3*xn^2))
+[!rarecbrt(0)] 0
+[!CubeRoot(nonzero a)] _cbrt(a)
+[!CubeRoot(0)] 0
+[!cbrt(a)] rarecbrt(a)
+[!intvcbrt(a)] zero(x: x^3-a)
+[!pi] tau/2
+[!eta] tau/4
+[!tau(x)] x tau
+[!pi(x)] x pi
+[!eta(x)] x*eta
+[!deg(r)] (r/tau)*360
+[!grad(r)] (r/tau)*400
+[!rad(r)] r
+[!me(x)] x
+[!abs(x)] |x|
+[!rev(r)] r/tau
+[!sign(nonzero x)] x/|x|
+[!sign(0)] 0
+[!_fac(0)] 1
+[!_fac(nonzero n)] |n|*_fac(|n|-1)
+[!fac(n)] sign(n)*_fac(|n|)
+[!rec(nonzero x)] 1/x
+[!int(x)] x\1
+[!frac(x)] x-int(x)
+[!TheAnswerOfLifeUniverseAndEverything] 42
+[!phi] (1+sqrt(5))/2
+[!e] 2.7182818
+[!h] 6.6260755*10^(-34)
+[!hbar] h/tau
+[!bitter] 7^3
+[!katharsis] 4551
+[!kat] katharsis
+[!leet] 1337
+[!nyan] 9
+[!half] 1/2
+[!quarter] 1/4
+[!full] 1
+[!twice(x)] 2*x
+[!once(x)] x
+[!triple(x)] 3*x
+[!quadriple(x)] 4*x
+[!quintiple(x)] 5*x
+[!square(x)] x^2
+[!cube(x)] x^3
+[!half(x)] half*x
+[!full(x)] x
+[!quarter(x)] quarter*x
+[!sin_(x)] ?(_mof(pi:x): 0; _sin(x))
+[!cos_(x)] ?(_mof(pi:x+eta): 0; _cos(x))
+[!sin(x)] ?(_sin(x); 0)
+[!cos(x)] ?(_cos(x); 0)
+[!not(x)] -int(x)-1
+[!neg(x)] -x

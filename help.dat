@@ -1,0 +1,471 @@
+:begin:help
+I am Fu Bar, your Butler.
+
+'x' and 'y' are floating-point numbers.
+'n', 'm' and 'k' are integer numbers.
+
+:stop
+I know the following operations:
+- Addition: x + y
+  Adds two floating-point numbers.
+  e.g. 4 + 5 = 9
+- Subtraction: x - y
+  Subtracts a floating-point number from another one.
+  e.g. 9 - 5 = 4
+- Multiplication: x * y
+  Multiplies two floating-point numbers.
+  e.g. 4 * 5 = 20
+- Division: x / y
+  Divides a floating-point number by another one.
+  e.g. 20 / 5 = 4
+- Integer Division: n \ n
+  Divides an integer by another one and returns the integer quotient.
+  e.g. 20 \ 6 = 3
+- Modulo: n # m
+  Divides an integer by another one and returns the modulo.
+  e.g. 20 # 6 = 2
+:stop
+- Exponentiation: x ^ n
+  Exponentiates a floating-point number by an integer power.
+  e.g. 2 ^ 4 = 16
+- Square Root: sqrt(x), SquareRoot(x)
+  Computes the square root of a floating-point number.
+  e.g. sqrt(9) = 3
+- Cube Root: cbrt(x), CubeRoot(x)
+  Computes the cube root of a floating-point number.
+  e.g. cbrt(27) = 3
+- nth Root: nrt(x; n), Root(x; n)
+  Computes the nth root of a floating-point number (n is an integer!)
+  e.g. nrt(4096; 6) = 4
+:stop
+- Factorial: n!
+  Computes the factorial of an integer.
+  e.g. 4! = 24
+- Absolute value: |x|, abs(x)
+  Computes the absolute value of a floating-point number.
+  e.g. |-33| = 33
+- Greatest common divisor: gcd(n; m)
+  Computes the greatest common divisor for two integers.
+  e.g. gcd(21; 28) = 7
+- Least common multiple: lcd(n; m)
+  Computes the least common multiple for two integers.
+  e.g. lcd(4; 3) = 12
+:stop
+- Sinus, Cosinus: sin(x), cos(x)
+  Computes the sinus / cosinus for a floating-point number.
+  You have to specify the source unit (except it's 'rad')
+  Output unit: radians
+  e.g. sin(pi/2) = 1
+       sin(90 deg) = 1
+       sin(100 grad) = 1
+- Rad/Deg/Grad conversions: rad(x), deg(x), grad(x)
+  Converts an angle into another unit.
+  You have to specify the source unit (except it's 'rad')
+  e.g. grad(180 deg) = 200
+       rad(90 deg) ~ 1.75
+       deg(pi) = 180
+:stop
+- Binomial Coefficient: k from n, nCk
+  From n chooses k, resulting the binomial coefficient.
+  e.g. 2 from 3 = 3
+       3C2 = 3
+:stop
+- Short sum: sum(var: start < end [$ step]; expression)
+  Sums the expression (end-start)/step times, iterating var from start to end.
+  e.g. sum(i: 1<4; i) = 10
+- Short product: product(var: start < end [$ step]; expression)
+  Multiplies the expression (end-start)/step times, iterating var from start to end.
+  e.g. product(i: 1<5; i) = 5! = 120
+:stop
+- Iterations: iterate(firstx: iteration)
+  Runs an iterations starting at firstx.
+  e.g. iterate(4: (xn+(9/xn))/2) = sqrt(9) = 3
+- Zero: zero(var: expression)
+  Finds the zero of a function.
+  e.g. zero(a: a^2-49) = 7
+- Solve: solve(var: expr1 = expr2)
+  Solves the equation.
+  e.g. solve(a: a^2 = 49) = 7
+:stop
+
+I know these constants:
+- 'tau' is about 6.28 and a full radian turn
+- 'pi' is about 3.14 and a half radian turn
+- 'phi' is the golden ratio: about 1.62
+- 'h' is the planck constant: about 6.626E-34
+- 'half' is 1/2, or 0.5
+- 'quarter' is 1/4, or 0.25
+- 'full' is 1
+:stop
+
+I know these units:
+- 'deg': Degrees, full turn = 360
+- 'grad': Gradian, full turn = 400
+- 'rad': Radians, full turn = tau = pi*2, about 6.28
+- 'turn', 'tau': Tau-Radians, full turn = 1
+- 'pi': Pi-Radians, full turn = 2
+:stop
+
+You can save custom variables!
+Just follow the syntax:
+  [name] expression
+After calculating the expression, the result will be saved 
+to the specified variable.
+To mark it as a constant, insert an exclamation mark before the name:
+  [!name] expression
+
+AND: The result will be saved to the predefined variable 'ans'.
+
+Note: Constants cannot be overwritten!
+:stop
+
+You can define custom functions!
+  [name(var)] expression
+To mark it as read-only, insert an exclamation mark before the name:
+  [!name(var)] expression
+To ensure, that the argument is not zero, add 'nonzero' before the var name:
+  [name(nonzero var)] expression
+To assign a separate value to name(0), enter:
+  [name(0)] expression
+  
+:stop
+For example:
+  [f(x)] 25x           => 0
+  f(4)                 => 100
+  
+  [f(nonzero x)] 1/x   => 1
+  f(4)                 => 0.25
+  f(0)                 => Function not defined for x=0
+  
+  [f(0)] 0             => 0
+  f(4)                 => 0.25
+  f(0)                 => 0
+  
+:stop
+I can compare two expressions!
+Try it like this:
+  expression = another expression
+I will tell you, whether the expressions are equal, or - if not -
+which expression is greater and tell you the difference and the
+quotient.
+:stop
+
+Now: Try it ;)
+Or use ':help <keyword>' for specific help.
+:end
+
+:begin:license
+Fu Bar is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Type ':fullgpl' to read it.
+:end
+
+:begin:coffee
+Was ist eine Kaffeemaschine?
+[21:29] <DrFreeworld> ding wo wasser rein und raus kommt.
+[21:29] <DrFreeworld> ende,.
+:end
+
+:begin:startup
+Hello, my name is Fu Bar and I'm your butler.
+What may I do for you?
+
+Type ':help' for a list of my skills.
+I am free software. For further information, type ':license'!
+To read the full license text, type ':fullgpl'.
+Type ':readme' to read further comments.
+
+:end
+
+:begin:help:addition
+:begin:help:add
+:begin:help:plus
+:begin:help:+
+:begin:help:operators
+:begin:help:sum
+Addition: x + y
+Adds two floating-point numbers.
+e.g. 5 + 4 = 9
+:end
+
+:begin:help:subtraction
+:begin:help:subtract
+:begin:help:sub
+:begin:help:minus
+:begin:help:-
+:begin:help:operators
+:begin:help:difference
+Subtraction: x - y
+Subtracts a floating-point number from another one.
+e.g. 9 - 5 = 4
+:end
+
+:begin:help:multiplication
+:begin:help:multiply
+:begin:help:mul
+:begin:help:times
+:begin:help:*
+:begin:help:operators
+:begin:help:product
+Multiplication: x * y
+Multiplies two floating-point numbers.
+e.g. 4 * 5 = 20
+:end
+
+:begin:help:division
+:begin:help:divide
+:begin:help:div
+:begin:help:/
+:begin:help:operators
+:begin:help:quotient
+Division: x / y
+Divides a floating-point number by another one.
+e.g. 20 / 5 = 4
+:end
+
+:begin:help:power
+:begin:help:exp
+:begin:help:^
+:begin:help:exponent
+:begin:help:exponentiation
+:begin:help:operators
+Exponentiation: x ^ n
+Exponentiates a floating-point number by an integer power.
+e.g. 2 ^ 4 = 16
+:end
+
+:begin:help:sqrt
+:begin:help:squareroot
+:begin:help:square root
+:begin:help:SquareRoot
+:begin:help:root
+:begin:help:functions
+Square Root: sqrt(x), SquareRoot(x)
+Computes the square root of a floating-point number.
+e.g. sqrt(9) = 3
+:end
+
+:begin:help:cbrt
+:begin:help:cuberoot
+:begin:help:cube root
+:begin:help:CubeRoot
+:begin:help:root
+:begin:help:functions
+Cube Root: cbrt(x), CubeRoot(x)
+Computes the cube root of a floating-point number.
+e.g. cbrt(27) = 3
+:end
+
+:begin:help:nrt
+:begin:help:root
+:begin:help:Root
+:begin:help:functions
+nth Root: nrt(x; n), Root(x; n)
+Computes the nth root of a floating-point number (n is an integer!)
+e.g. nrt(4096; 6) = 4
+:end
+
+:begin:help:factorial
+:begin:help:!
+:begin:help:operators
+:begin:help:functions
+Factorial: n!
+Computes the factorial of an integer.
+e.g. 4! = 24
+:end
+
+:begin:help:abs
+:begin:help:absolute value
+:begin:help:|
+:begin:help:|x|
+:begin:help:absolute
+:begin:help:operators
+Absolute value: |x|
+Computes the absolute value of a floating-point number.
+e.g. |-33| = 33
+:end
+
+:begin:help:gcd
+:begin:help:functions
+Greatest common divisor: gcd(n; m)
+Computes the greatest common divisor for two integers.
+e.g. gcd(21; 28) = 7
+:end
+
+:begin:help:lcm
+:begin:help:functions
+Least common multiple: lcd(n; m)
+Computes the least common multiple for two integers.
+e.g. lcd(4; 3) = 12
+:end
+
+:begin:help:sin
+:begin:help:cos
+:begin:help:sinus
+:begin:help:cosinus
+:begin:help:angles
+:begin:help:functions
+Sinus, Cosinus: sin(x), cos(x)
+Computes the sinus / cosinus for a floating-point number.
+You have to specify the source unit (except it's radians)
+Output unit: radians
+e.g. sin(pi/2) = 1
+     sin(90 deg) = 1
+     sin(100 grad) = 1
+:end
+
+:begin:help:rad
+:begin:help:deg
+:begin:help:grad
+:begin:help:angles
+:begin:help:conversions
+:begin:help:degree
+:begin:help:gradian
+:begin:help:radian
+Rad/Deg/Grad conversions: rad(x), deg(x), grad(x)
+Converts an angle into another unit.
+You have to specify the source unit (except it's radians)
+e.g. grad(180 deg) = 200
+     rad(90 deg) ~ 1.75
+     deg(pi) = 180
+:end
+
+:begin:help:binom
+:begin:help:choose
+:begin:help:from
+:begin:help:C
+:begin:help:binomial
+:begin:help:coefficient
+:begin:help:binomial coefficient
+:begin:help:operators
+Binomial Coefficient: k from n, nCk
+From n chooses k, resulting the binomial coefficient.
+e.g. 2 from 3 = 3
+     3C2 = 3
+     
+  / n \
+  \ k /
+:end
+
+:begin:help:constants
+:begin:help:const
+I know these constants:
+- 'tau' is about 6.28 and a full radian turn
+- 'pi' is about 3.14 and a half radian turn
+- 'phi' is the golden ratio: about 1.62
+- 'h' is the planck constant: about 6.626E-34
+- 'half' is 1/2, or 0.5
+- 'quarter' is 1/4, or 0.25
+- 'full' is 1
+:end
+
+:begin:help:tau
+Tau is about 6.28 and a full radian turn.
+It's an irrational, transcendent number.
+deg(tau) = 360
+grad(tau) = 400
+tau = 2*pi
+
+For further information about Tau, research at http://tauday.com/
+:end
+
+:begin:help:pi
+Pi is about 3.14 and a half radian turn.
+It's an irrational, transcendent number.
+deg(pi) = 180
+grad(pi) = 200
+pi = tau/2
+
+For further information, why to use Tau instead of Pi,
+research at http://tauday.com/
+:end
+
+:begin:help:units
+:begin:help:angles
+I know these units:
+- 'deg': Degrees, full turn = 360
+- 'grad': Gradian, full turn = 400
+- 'rad': radians, full turn = tau = pi*2, about 6.28
+- 'turn', 'tau': radians, depending on tau, full turn = 1
+- 'pi': radians, depending on pi, full turn = 2
+:end
+
+:begin:help:var
+:begin:help:variables
+:begin:help:ans
+You can save custom variables!
+Just follow the syntax:
+  [name] expression
+After calculating the expression, the result will be saved 
+to the specified variable.
+
+AND: The result will be saved to the predefined variable 'ans'.
+
+:begin:help:const
+:begin:help:constants
+Note: You cannot save results to constants!
+:end
+
+:begin:help:equation
+:begin:help:equal
+:begin:help:compare
+:begin:help:comparison
+I can compare two expressions!
+Try it like this:
+  expression = another expression
+I will tell you, whether the expressions are equal, or - if not -
+which expression is greater and tell you the difference and the
+quotient.
+:end
+
+:extlink:fullgpl
+COPYING
+
+:extlink:readme
+README
+
+:begin:troll
+[14:44] <BKA-Bot> das war kein troll
+[14:44] <BKA-Bot> das war ein klebstoffschnüffelner macuser der mal etwas "verrücktes" machen wollte
+:end
+
+:begin:help:sum
+:begin:help:add
+:begin:help:addition
+:begin:help:sigma
+:begin:help:shortsum
+:begin:help:summation
+Short sum: sum(var: start < end [$ step]; expression)
+Sums the expression (end-start)/step times, iterating var from start to end.
+e.g. sum(i: 1<4; i) = 10
+:end
+
+:begin:help:product
+:begin:help:multiply
+:begin:help:mul
+:begin:help:multiplication
+:begin:help:pi
+:begin:help:shortproduct
+Short product: product(var: start < end [$ step]; expression)
+Multiplies the expression (end-start)/step times, iterating var from start to end.
+e.g. product(i: 1<5; i) = 5! = 120
+:end
+
+:begin:help:iterate
+:begin:help:iteration
+:begin:help:iterations
+Iterations: iterate(firstx: iteration)
+Runs an iterations starting at firstx.
+e.g. iterate(4: (xn+(9/xn))/2) = sqrt(9) = 3
+:end
