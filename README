@@ -33,9 +33,16 @@ Files:
     -> vars.pas         Fu Bar      Source  GPL  Marvin Cohrs
     -> cmd.pas          Fu Bar      Source  GPL  Marvin Cohrs
     -> buffer.pas       Fu Bar      Source  GPL  Marvin Cohrs
+    -> cmply.pas        Fu Bar      Source  GPL  Marvin Cohrs
+    -> explain.pas      Fu Bar      Source  GPL  Marvin Cohrs
+    -> tree.pas         Fu Bar      Source  GPL  Marvin Cohrs
+    -> autoload.dat     Fu Bar      Source  GPL  Marvin Cohrs
     -> prayerlist.pas   Prayer      Source  GPL  Marvin Cohrs
     -> fubar            Fu Bar      Binary (amd64/linux)
     -> fubar.exe        Fu Bar      Binary (i386/windows)
+    -> help.dat         Fu Bar      RT Doc  GFDL Marvin Cohrs
+    -> fubar.tex        Fu Bar      Doc     GFDL Marvin Cohrs
+    -> fubar.pdf        Fu Bar      Doc     GFDL Marvin Cohrs
 
 Thanks to Jack W. Crenshaw, for writing the great compiler-construction
 tutorial "Let's Build a Compiler!"
