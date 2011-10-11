@@ -91,7 +91,7 @@ begin
         if not FuncExists(name) then
             Error('Func '+name+' is undefined!');
         b := GetFunc(name,tz,vn);
-        z := (not tz) and SameValue(0,x);
+        z := (not tz) and (x=Complex(0));
         if z and (not VarExists(name+'0')) then
             Error('Func '+name+' is undefined for '+vn+'=0')
         else if z then
@@ -124,7 +124,7 @@ begin
         if SameValue(f,_f) then
             Error('Function does not converge.');
     end;
-    if SameValue(f,0) then
+    if f=Complex(0) then
         Result := c
     else if (f < 0) then
         Result := FindZero(c,b,name,f)
@@ -237,7 +237,7 @@ begin
       rl := look;
       PopPointer;
       look := l;
-    until SameValue(xn,x);
+    until (xn=x) or dontfollow;
     look := rl;
     UpdatePointer(p);
     Match(')');
@@ -264,7 +264,7 @@ begin
         Match('|');
         Result := Expression;
         ExplainAbs(Result);
-        if Result<0 then Result := -Result;
+        Result := RunFunc('_abs',Result);
         TellResult(Result);
         Match('|')
     end else if look = '?' then begin
@@ -288,6 +288,23 @@ begin
         dontfollow := false;
         if c then Result := y
         else Result := x;
+    end else if look = '{' then begin
+        Match('{');
+        SkipWhite;
+        if look='I' then begin
+            Match('I'); 
+            if look='n' then begin
+                Match('n'); Match('t');
+                Result := MakeInt(Expression.r);
+            end else begin
+                Match('m');
+                Result := Expression.i;
+            end
+        end else if look='R' then begin
+            Match('R'); Match('e');
+            Result := Expression.r;
+        end;
+        Match('}')
     end else if IsAlpha(look) then begin
         nm := GetName;
         if nm = '_sqrt' then begin

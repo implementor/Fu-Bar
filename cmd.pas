@@ -142,10 +142,12 @@ begin
             Result := FloatToStr(x.r)
         else if SameValue(x.r,0) and SameValue(x.i,1) then
             Result := 'i'
+        else if SameValue(x.r,0) and SameValue(x.i,-1) then
+            Result := '-i'
         else if SameValue(x.r,0) then
             Result := FloatToStr(x.i) + 'i'
         else if x.i<0 then
-            Result := FloatToStr(x.r) + ' - ' + FloatToStr(x.i) + 'i'
+            Result := FloatToStr(x.r) + ' - ' + FloatToStr(-x.i) + 'i'
         else
             Result := FloatToStr(x.r) + ' + ' + FloatToStr(x.i) + 'i'
     end else if (x>8999.99) and (x<9000.01) then
