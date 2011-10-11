@@ -1,3 +1,8 @@
+[!i] _sqrt(-1)
+[!sign(nonzero x)] x/|x|
+[!sign(0)] 0
+[!xsqrt(nonzero a)] ?(sign(a)+1: iterate(?(a;1):(xn+(a/xn))/2); i*xsqrt(|a|))
+[!xsqrt(0)] 0
 [!raresqrt(nonzero a)] iterate(?(a; 1): (xn+(a/xn))/2)
 [!raresqrt(0)] 0
 [!SquareRoot(nonzero a)] _sqrt(a)
@@ -21,8 +26,6 @@
 [!me(x)] x
 [!abs(x)] |x|
 [!rev(r)] r/tau
-[!sign(nonzero x)] x/|x|
-[!sign(0)] 0
 [!_fac(0)] 1
 [!_fac(nonzero n)] |n|*_fac(|n|-1)
 [!fac(n)] sign(n)*_fac(|n|)

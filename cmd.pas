@@ -138,6 +138,14 @@ begin
             Result := 'a half turn (tau/2, pi, 2eta)'
         else if SameValue(x,pi/2) and SameValue(x.i,0) then
             Result := 'a quarter turn (tau/4, pi/2, eta)'
+        else if SameValue(x.i,0) then
+            Result := FloatToStr(x.r)
+        else if SameValue(x.r,0) and SameValue(x.i,1) then
+            Result := 'i'
+        else if SameValue(x.r,0) then
+            Result := FloatToStr(x.i) + 'i'
+        else if x.i<0 then
+            Result := FloatToStr(x.r) + ' - ' + FloatToStr(x.i) + 'i'
         else
             Result := FloatToStr(x.r) + ' + ' + FloatToStr(x.i) + 'i'
     end else if (x>8999.99) and (x<9000.01) then

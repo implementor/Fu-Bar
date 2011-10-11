@@ -40,10 +40,11 @@ var
 implementation
 
 type
-    TUnit = (uradians, uDegree, uGrad, uTau, uPi, uThousand);
+    TUnit = (uradians, uDegree, uGrad, uTau, uPi, uThousand, uImaginary);
     
 var
     xid: cardinal = $00051421; // START in 1337speak
+    dontfollow: boolean;
 
 function GetUnit: TUnit;
 var nm: string;
@@ -70,7 +71,10 @@ begin
         nm := GetName;
         if (nm<>'pi') then Expected('Unit',''''+nm+'''');
         Result := uPi
-    end
+    end else if look='i' then begin
+        Match('i');
+        Result := uImaginary;
+    end;
 end;
 
 function RunFunc(const name: string; const x: Complex): Complex;
@@ -81,29 +85,33 @@ var
     l: char;
     z: boolean;
 begin
-    if not FuncExists(name) then
-        Error('Func '+name+' is undefined!');
-    b := GetFunc(name,tz,vn);
-    z := (not tz) and SameValue(0,x);
-    if z and (not VarExists(name+'0')) then
-        Error('Func '+name+' is undefined for '+vn+'=0')
-    else if z then
-        Result := GetVar(name+'0')
+    if dontfollow then
+        Result := 0
     else begin
-        PushBuffer;
-        UpdateBuffer(b);
-        l := look;
-        GetChar;
-        vv := GetVar(vn);
-        SetVar(vn, x);
-        ExplainFuncEnter(name,vn,x);
-        IndentExplanations;
-        Result := Expression;
-        UnindentExplanations;
-        ExplainFuncLeave(name,vn,x,result);
-        SetVar(vn, vv);
-        PopBuffer;
-        look := l;
+        if not FuncExists(name) then
+            Error('Func '+name+' is undefined!');
+        b := GetFunc(name,tz,vn);
+        z := (not tz) and SameValue(0,x);
+        if z and (not VarExists(name+'0')) then
+            Error('Func '+name+' is undefined for '+vn+'=0')
+        else if z then
+            Result := GetVar(name+'0')
+        else begin
+            PushBuffer;
+            UpdateBuffer(b);
+            l := look;
+            GetChar;
+            vv := GetVar(vn);
+            SetVar(vn, x);
+            ExplainFuncEnter(name,vn,x);
+            IndentExplanations;
+            Result := Expression;
+            UnindentExplanations;
+            ExplainFuncLeave(name,vn,x,result);
+            SetVar(vn, vv);
+            PopBuffer;
+            look := l;
+        end;
     end;
 end;
 
@@ -243,7 +251,7 @@ var
     k: byte; 
     u: TUnit; 
     x,y: Complex;
-    b: boolean;
+    b,c: boolean;
     a,e: word;
 begin
     SkipWhite;
@@ -264,18 +272,21 @@ begin
         Match('(');
         Result := Expression;
         b := true;
+        c := SameValue(Result,0);
         if look=':' then begin
             Match(':');
+            dontfollow := c;
             x := Expression;
             b := false;
         end else x := Result;
         if (look=';') or b then begin
             Match(';');
+            dontfollow := not c;
             y := Expression;
         end else y := 0;
         Match(')');
-        if SameValue(Result,0) then
-            Result := y
+        dontfollow := false;
+        if c then Result := y
         else Result := x;
     end else if IsAlpha(look) then begin
         nm := GetName;
@@ -399,6 +410,7 @@ begin
     uGrad:      Result := (Result / 200) * Pi;
     uTau:       Result := Result * Pi * 2;
     uPi:        Result := Result * Pi;
+    uImaginary: Result := Result * cmplx_i;
     // Needed for 'nyan thousand':
     uThousand:  Result := Result * 1000;
     end;
@@ -415,7 +427,7 @@ begin
         Match('^');
         x := Factor();
         ExplainPower(Result,x);
-        Result := Power(Result, MakeInt(x));
+        Result := sqrt.Power(Result, MakeInt(x));
         TellResult(Result)
     end;
     SkipWhite
@@ -428,9 +440,9 @@ begin
     while look in ['*','/','\','#'] do
         case look of
         '*': begin Match('*'); a := Factor; ExplainMul(Result,a); Result *= a; TellResult(Result) end;
-        '/': begin Match('/'); a := Factor; ExplainDiv(Result,a); Result /= a; TellResult(Result) end;
-        '\': begin Match('\'); a := Factor; ExplainIntDiv(Result,a); Result := MakeInt(Result) div MakeInt(a); TellResult(Result) end;
-        '#': begin Match('#'); a := Factor; ExplainMod(Result,a); Result := MakeInt(Result) mod MakeInt(a); TellResult(Result) end;
+        '/': begin Match('/'); a := Factor; ExplainDiv(Result,a); if dontfollow then a := 1; Result /= a; TellResult(Result) end;
+        '\': begin Match('\'); a := Factor; ExplainIntDiv(Result,a); if dontfollow then a := 1; Result := MakeInt(Result) div MakeInt(a); TellResult(Result) end;
+        '#': begin Match('#'); a := Factor; ExplainMod(Result,a); if dontfollow then a := 1; Result := MakeInt(Result) mod MakeInt(a); TellResult(Result) end;
         end;
     SkipWhite
 end;
@@ -553,4 +565,6 @@ begin
     end
 end;
 
+initialization
+    dontfollow := false;
 end.
