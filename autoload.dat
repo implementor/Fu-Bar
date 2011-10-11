@@ -2,7 +2,7 @@
 [!raresqrt(0)] 0
 [!SquareRoot(nonzero a)] _sqrt(a)
 [!SquareRoot(0)] 0
-[!sqrt(a)] raresqrt(a)
+[!sqrt(a)] _sqrt(a)
 [!intvsqrt(a)] zero(x: x^2-a)
 [!rarecbrt(nonzero a)] iterate(?(a; 1): (2*xn^3+a)/(3*xn^2))
 [!rarecbrt(0)] 0

@@ -21,7 +21,7 @@ unit interpreter;
 
 interface
 
-uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain;
+uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain, cmplx;
 
 procedure StartInterpreter;
 
@@ -50,7 +50,7 @@ begin
 end;
 
 procedure StartInterpreter;
-var x,y: Extended; q: boolean; l: string;
+var x,y: Complex; q: boolean; l: string;
 begin
     try
         successful := false;

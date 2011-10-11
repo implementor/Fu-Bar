@@ -21,21 +21,21 @@ unit expressions;
 
 interface
 
-uses cradle, sqrt, math, vars, buffer, explain;
+uses cradle, sqrt, math, vars, buffer, explain, cmplx;
 
-function RunFunc(const name: string; const x: Extended): Extended;
-function FindZero(const a,b: Extended; const name: string; const _f:Extended=0; const _a:Extended=0; const _b:Extended=0): Extended;
-function ShortSum: Extended;
-function ShortProduct: Extended;
-function Iteration: Extended;
-function Factor: Extended;
-function Term: Extended;
-function TermA: Extended;
-function Expression: Extended;
-function Eval: Extended;
+function RunFunc(const name: string; const x: Complex): Complex;
+function FindZero(const a,b: Complex; const name: string; const _f:Complex=0): Complex;
+function ShortSum: Complex;
+function ShortProduct: Complex;
+function Iteration: Complex;
+function Factor: Complex;
+function Term: Complex;
+function TermA: Complex;
+function Expression: Complex;
+function Eval: Complex;
 
 var
-    Answer: Extended;
+    Answer: Complex;
 
 implementation
 
@@ -73,11 +73,11 @@ begin
     end
 end;
 
-function RunFunc(const name: string; const x: Extended): Extended;
+function RunFunc(const name: string; const x: Complex): Complex;
 var
     vn,b: string;
     tz: boolean;
-    vv: extended;
+    vv: Complex;
     l: char;
     z: boolean;
 begin
@@ -107,8 +107,8 @@ begin
     end;
 end;
 
-function FindZero(const a,b: Extended; const name: string; const _f:Extended=0; const _a:Extended=0; const _b:Extended=0): Extended;
-var f,c: Extended;
+function FindZero(const a,b: Complex; const name: string; const _f:Complex=0): Complex;
+var f,c: Complex;
 begin
     c := (a+b)/2;
     f := RunFunc(name,c);
@@ -118,15 +118,15 @@ begin
     end;
     if SameValue(f,0) then
         Result := c
-    else if (f < 0) {and (not swap)} then
-        Result := FindZero(c,b,name,f,a,b)
-    else if (f > 0) {and (not swap)} then
-        Result := FindZero(a,c,name,f,a,b)
+    else if (f < 0) then
+        Result := FindZero(c,b,name,f)
+    else if (f > 0) then
+        Result := FindZero(a,c,name,f)
 end;
 
-function Shortsum: Extended;
+function Shortsum: Complex;
 var
-    x, y, step: Extended; 
+    x, y, step: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -165,9 +165,9 @@ begin
     Match(')');
 end;
 
-function ShortProduct: Extended;
+function ShortProduct: Complex;
 var
-    x, y, step: Extended; 
+    x, y, step: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -206,9 +206,9 @@ begin
     Match(')');
 end;
 
-function Iteration: Extended;
+function Iteration: Complex;
 var 
-    x, xn: extended;
+    x, xn: Complex;
     l, rl: char;
     p: word;
 begin
@@ -237,12 +237,12 @@ begin
     ExplainIterFix(xn);
 end;
 
-function Factor: Extended;
+function Factor: Complex;
 var 
     nm, t, t2, l, r: string; 
     k: byte; 
     u: TUnit; 
-    x,y: Extended;
+    x,y: Complex;
     b: boolean;
     a,e: word;
 begin
@@ -421,8 +421,8 @@ begin
     SkipWhite
 end;
 
-function Term: Extended;
-var a: extended;
+function Term: Complex;
+var a: Complex;
 begin
     Result := Factor;
     while look in ['*','/','\','#'] do
@@ -435,8 +435,8 @@ begin
     SkipWhite
 end;
 
-function TermA: Extended;
-var nm: string; a: extended;
+function TermA: Complex;
+var nm: string; a: Complex;
 begin
     SkipWhite;
     if look in ['+','-'] then Result := 0
@@ -473,8 +473,8 @@ begin
     SkipWhite
 end;
 
-function Expression: Extended;
-var nm: string; b: extended;
+function Expression: Complex;
+var nm: string; b: Complex;
 begin
     Result := TermA;
     while look in ['f','C'] do
@@ -501,7 +501,7 @@ begin
     SkipWhite;
 end;
 
-function Eval: Extended;
+function Eval: Complex;
 var nm, v, arg: string; f, tz, c: boolean;
 begin
     SkipWhite;

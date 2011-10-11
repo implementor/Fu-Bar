@@ -21,11 +21,11 @@ unit sqrt;
 
 interface
 
-uses sysutils, math;
+uses sysutils, math, cmplx;
 
-function Heron(const sqr: Extended): Extended;
-function Heron(const q: Extended; const k: byte): Extended;
-function Power(const base: Extended; exp:int64): Extended;
+function Heron(const sqr: Complex): Complex;
+function Heron(const q: Complex; const k: byte): Complex;
+function Power(const base: Complex; exp:int64): Complex;
 function Fac(const n: byte): Int64;
 function BinCoef(n, k: int64): Int64;
 
@@ -37,10 +37,10 @@ implementation
 // Heron-Iteration
 // Ermittelt Quadratwurzel
 // x[n+1] = (x[n] + (a / x[n])) / 2
-function Heron(const sqr: Extended): Extended;
-var x, xn: extended;
+function Heron(const sqr: Complex): Complex;
+var x, xn: Complex;
 begin
-    if sqr<0 then raise EInvalidOp.Create('Cannot calc sqrt of '+floattostr(sqr))
+    if sqr<0 then Result := cmplx_i * Heron(-sqr)
     else if SameValue(sqr,0) then Result := 0
     else begin
         xn := sqr;
@@ -55,10 +55,10 @@ end;
 // verallgemeinerte Heron-Iteration
 // Ermittelt k-te Wurzel
 // x[n+1] = ((k - 1) * x[n] ^ k + a) / (k * x[n] ^ (k - 1))
-function Heron(const q: Extended; const k: byte): Extended;
-var x, xn: extended;
+function Heron(const q: Complex; const k: byte): Complex;
+var x, xn: Complex;
 begin
-    if (q<0) and (k mod 2 = 0) then raise EInvalidOp.Create('Cannot calc '+inttostr(k)+'th root of '+floattostr(q));
+    if (q<0) and (k mod 2 = 0) then raise EInvalidOp.Create('Cannot calc '+inttostr(k)+'th root of '+floattostr(extended(q)));
     xn := q;
     repeat
         x := xn;
@@ -68,7 +68,7 @@ begin
 end;
 
 // Potenz mit ganzzahligem Exponenten
-function Power(const base: Extended; exp:int64): Extended;
+function Power(const base: Complex; exp:int64): Complex;
 begin
     Result := 1;
     if exp<0 then  
