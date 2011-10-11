@@ -21,17 +21,29 @@ unit cmplx;
 
 interface
 
+uses math;
+
 type
     Complex = record
         r, i: Extended;
     end;
 
 operator :=(r: Extended) c: Complex;
+operator :=(c: Complex) r: Extended;
+operator :=(c: Complex) i: Int64;
 operator +(a,b: Complex) c: Complex;
 operator -(a,b: Complex) c: Complex;
 operator *(a,b: Complex) c: Complex;
 operator /(a,b: Complex) c: Complex;
 operator -(a: Complex) c: Complex;
+operator =(a,b: Complex) e: Boolean;
+operator <(a,b: Complex) l: boolean;
+operator >(a,b: Complex) g: Boolean;
+operator <=(a,b:Complex) le: Boolean;
+operator >=(a,b:Complex) ge: Boolean;
+
+const
+    cmplx_i: Complex = (r: 0; i: 1);
 
 implementation
 
@@ -39,6 +51,16 @@ operator :=(r: Extended) c: Complex;
 begin
     c.r := r;
     c.i := 0;
+end;
+
+operator :=(c: Complex) r: Extended;
+begin
+    r := c.r;
+end;
+
+operator :=(c: Complex) i: Int64;
+begin
+    i := Floor(c.r);
 end;
 
 operator +(a,b: Complex) c: Complex;
@@ -69,6 +91,31 @@ operator -(a: Complex) c: Complex;
 begin
     c.r := -a.r;
     c.i := -a.i;
+end;
+
+operator =(a,b: Complex) e: Boolean;
+begin
+    e := SameValue(a.r,b.r) and SameValue(a.i,b.i)
+end;
+
+operator <(a,b: Complex) l: Boolean;
+begin
+    l := a.r<b.r;
+end;
+
+operator >(a,b: Complex) g: Boolean;
+begin
+    g := a.r>b.r;
+end;
+
+operator <=(a,b:Complex) le: Boolean;
+begin
+    le := (a<b) or (a=b);
+end;
+
+operator >=(a,b:Complex) ge: Boolean;
+begin
+    ge := (a>b) or (a=b);
 end;
 
 end.

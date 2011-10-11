@@ -94,22 +94,36 @@ begin
 end;
 
 function GetNum: Extended;
-var c: boolean; ac: byte;
+var c: boolean; ac: byte; base: byte;
+    function Digit(const d: char): byte;
+    begin
+        if (d>='0') and (d<='9') then
+            Result := Ord(d)-Ord('0')
+        else if (d>='a') and (d<='f') then
+            Result := Ord(d)-Ord('a')+10
+        else if (d>='A') and (d<='F') then
+            Result := Ord(d)-Ord('A')+10
+    end;
 begin
     Result := 0;
     c := false;
     ac := 0;
-    if not IsDigit(look) then Expected('Float',look);
+    base := 10;
+    if look='$' then begin
+        Match('$');
+        base := 16;
+    end;
+    if not (IsDigit(look) or (look in ['.',',']) or ((base=16)and(look in ['a'..'f','A'..'F']))) then Expected('Float',look);
     repeat
         if look in ['.',','] then c := true
         else begin
-            Result := Result * 10 + Ord(look) - Ord('0');
+            Result := Result * base + Digit(look);
             if c then Inc(ac)
         end;
         GetChar;
-    until not (IsDigit(look) or ((look in [',','.']) and (not c)));
+    until not (IsDigit(look) or ((look in [',','.']) and (not c)) or ((base=16)and(look in ['a'..'f','A'..'F'])));
     while (ac > 0) do begin
-        Result /= 10;
+        Result /= base;
         Dec(ac)
     end
 end;

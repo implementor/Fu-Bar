@@ -21,12 +21,12 @@ unit vars;
 
 interface
 
-uses cradle, prayerlist;
+uses cradle, prayerlist, cmplx;
 
 type
     TVariable = record
         Name: string;
-        Value: Extended;
+        Value: Complex;
         IsConst: Boolean;
     end;
     PVariable = ^TVariable;
@@ -44,8 +44,8 @@ var
 
 procedure InitVars;
 procedure FreeVars;
-function GetVar(const name: string): Extended;
-procedure SetVar(const name: string; const val: Extended; const setconst: boolean = false);
+function GetVar(const name: string): Complex;
+procedure SetVar(const name: string; const val: Complex; const setconst: boolean = false);
 function VarExists(const name: string): Boolean;
 function GetFunc(const name: string): string; overload;
 function GetFunc(const name: string; out takezero: boolean; out vname: string): string; overload;
@@ -82,7 +82,7 @@ begin
         Result := Result or (Varlist[i]^.name=name)
 end;
 
-function GetVar(const name: string): Extended;
+function GetVar(const name: string): Complex;
 var i: word;
 begin
     Result := 0;
@@ -92,7 +92,7 @@ begin
             Result := Varlist[i]^.value
 end;
 
-procedure SetVar(const name: string; const val: Extended; const setconst: boolean = false);
+procedure SetVar(const name: string; const val: Complex; const setconst: boolean = false);
 var v: PVariable; i: word; e: boolean;
 begin
     e := false;

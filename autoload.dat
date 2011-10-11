@@ -1,4 +1,12 @@
-[!raresqrt(nonzero a)] iterate(?(a; 1): (xn+(a/xn))/2)
+[!i] _sqrt(-1)
+[!_abs(x)] _sqrt({Rex}^2+{Imx}^2)
+[!int(x)] {Intx}
+[!frac(x)] {Rex}-{Intx}
+[!Im(x)] {Imx}
+[!Re(x)] {Rex}
+[!sign(nonzero x)] x/|{Rex}|
+[!sign(0)] 0
+[!raresqrt(nonzero a)] ?(sign(a)+1: iterate(a:(xn+(a/xn))/2); i*raresqrt(|a|))
 [!raresqrt(0)] 0
 [!SquareRoot(nonzero a)] _sqrt(a)
 [!SquareRoot(0)] 0
@@ -21,14 +29,10 @@
 [!me(x)] x
 [!abs(x)] |x|
 [!rev(r)] r/tau
-[!sign(nonzero x)] x/|x|
-[!sign(0)] 0
 [!_fac(0)] 1
 [!_fac(nonzero n)] |n|*_fac(|n|-1)
 [!fac(n)] sign(n)*_fac(|n|)
 [!rec(nonzero x)] 1/x
-[!int(x)] x\1
-[!frac(x)] x-int(x)
 [!TheAnswerOfLifeUniverseAndEverything] 42
 [!phi] (1+sqrt(5))/2
 [!e] 2.7182818

@@ -21,29 +21,30 @@ unit expressions;
 
 interface
 
-uses cradle, sqrt, math, vars, buffer, explain;
+uses cradle, sqrt, math, vars, buffer, explain, cmplx;
 
-function RunFunc(const name: string; const x: Extended): Extended;
-function FindZero(const a,b: Extended; const name: string; const _f:Extended=0; const _a:Extended=0; const _b:Extended=0): Extended;
-function ShortSum: Extended;
-function ShortProduct: Extended;
-function Iteration: Extended;
-function Factor: Extended;
-function Term: Extended;
-function TermA: Extended;
-function Expression: Extended;
-function Eval: Extended;
+function RunFunc(const name: string; const x: Complex): Complex;
+function FindZero(const a,b: Complex; const name: string; const _f:Complex=0): Complex;
+function ShortSum: Complex;
+function ShortProduct: Complex;
+function Iteration: Complex;
+function Factor: Complex;
+function Term: Complex;
+function TermA: Complex;
+function Expression: Complex;
+function Eval: Complex;
 
 var
-    Answer: Extended;
+    Answer: Complex;
 
 implementation
 
 type
-    TUnit = (uradians, uDegree, uGrad, uTau, uPi, uThousand);
+    TUnit = (uradians, uDegree, uGrad, uTau, uPi, uThousand, uImaginary);
     
 var
     xid: cardinal = $00051421; // START in 1337speak
+    dontfollow: boolean;
 
 function GetUnit: TUnit;
 var nm: string;
@@ -70,45 +71,52 @@ begin
         nm := GetName;
         if (nm<>'pi') then Expected('Unit',''''+nm+'''');
         Result := uPi
-    end
-end;
-
-function RunFunc(const name: string; const x: Extended): Extended;
-var
-    vn,b: string;
-    tz: boolean;
-    vv: extended;
-    l: char;
-    z: boolean;
-begin
-    if not FuncExists(name) then
-        Error('Func '+name+' is undefined!');
-    b := GetFunc(name,tz,vn);
-    z := (not tz) and SameValue(0,x);
-    if z and (not VarExists(name+'0')) then
-        Error('Func '+name+' is undefined for '+vn+'=0')
-    else if z then
-        Result := GetVar(name+'0')
-    else begin
-        PushBuffer;
-        UpdateBuffer(b);
-        l := look;
-        GetChar;
-        vv := GetVar(vn);
-        SetVar(vn, x);
-        ExplainFuncEnter(name,vn,x);
-        IndentExplanations;
-        Result := Expression;
-        UnindentExplanations;
-        ExplainFuncLeave(name,vn,x,result);
-        SetVar(vn, vv);
-        PopBuffer;
-        look := l;
+    end else if look='i' then begin
+        Match('i');
+        Result := uImaginary;
     end;
 end;
 
-function FindZero(const a,b: Extended; const name: string; const _f:Extended=0; const _a:Extended=0; const _b:Extended=0): Extended;
-var f,c: Extended;
+function RunFunc(const name: string; const x: Complex): Complex;
+var
+    vn,b: string;
+    tz: boolean;
+    vv: Complex;
+    l: char;
+    z: boolean;
+begin
+    if dontfollow then
+        Result := 0
+    else begin
+        if not FuncExists(name) then
+            Error('Func '+name+' is undefined!');
+        b := GetFunc(name,tz,vn);
+        z := (not tz) and (x=Complex(0));
+        if z and (not VarExists(name+'0')) then
+            Error('Func '+name+' is undefined for '+vn+'=0')
+        else if z then
+            Result := GetVar(name+'0')
+        else begin
+            PushBuffer;
+            UpdateBuffer(b);
+            l := look;
+            GetChar;
+            vv := GetVar(vn);
+            SetVar(vn, x);
+            ExplainFuncEnter(name,vn,x);
+            IndentExplanations;
+            Result := Expression;
+            UnindentExplanations;
+            ExplainFuncLeave(name,vn,x,result);
+            SetVar(vn, vv);
+            PopBuffer;
+            look := l;
+        end;
+    end;
+end;
+
+function FindZero(const a,b: Complex; const name: string; const _f:Complex=0): Complex;
+var f,c: Complex;
 begin
     c := (a+b)/2;
     f := RunFunc(name,c);
@@ -116,17 +124,17 @@ begin
         if SameValue(f,_f) then
             Error('Function does not converge.');
     end;
-    if SameValue(f,0) then
+    if f=Complex(0) then
         Result := c
-    else if (f < 0) {and (not swap)} then
-        Result := FindZero(c,b,name,f,a,b)
-    else if (f > 0) {and (not swap)} then
-        Result := FindZero(a,c,name,f,a,b)
+    else if (f < 0) then
+        Result := FindZero(c,b,name,f)
+    else if (f > 0) then
+        Result := FindZero(a,c,name,f)
 end;
 
-function Shortsum: Extended;
+function Shortsum: Complex;
 var
-    x, y, step: Extended; 
+    x, y, step: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -165,9 +173,9 @@ begin
     Match(')');
 end;
 
-function ShortProduct: Extended;
+function ShortProduct: Complex;
 var
-    x, y, step: Extended; 
+    x, y, step: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -206,9 +214,9 @@ begin
     Match(')');
 end;
 
-function Iteration: Extended;
+function Iteration: Complex;
 var 
-    x, xn: extended;
+    x, xn: Complex;
     l, rl: char;
     p: word;
 begin
@@ -229,7 +237,7 @@ begin
       rl := look;
       PopPointer;
       look := l;
-    until SameValue(xn,x);
+    until (xn=x) or dontfollow;
     look := rl;
     UpdatePointer(p);
     Match(')');
@@ -237,13 +245,13 @@ begin
     ExplainIterFix(xn);
 end;
 
-function Factor: Extended;
+function Factor: Complex;
 var 
     nm, t, t2, l, r: string; 
     k: byte; 
     u: TUnit; 
-    x,y: Extended;
-    b: boolean;
+    x,y: Complex;
+    b,c: boolean;
     a,e: word;
 begin
     SkipWhite;
@@ -256,7 +264,7 @@ begin
         Match('|');
         Result := Expression;
         ExplainAbs(Result);
-        if Result<0 then Result := -Result;
+        Result := RunFunc('_abs',Result);
         TellResult(Result);
         Match('|')
     end else if look = '?' then begin
@@ -264,19 +272,39 @@ begin
         Match('(');
         Result := Expression;
         b := true;
+        c := SameValue(Result,0);
         if look=':' then begin
             Match(':');
+            dontfollow := c;
             x := Expression;
             b := false;
         end else x := Result;
         if (look=';') or b then begin
             Match(';');
+            dontfollow := not c;
             y := Expression;
         end else y := 0;
         Match(')');
-        if SameValue(Result,0) then
-            Result := y
+        dontfollow := false;
+        if c then Result := y
         else Result := x;
+    end else if look = '{' then begin
+        Match('{');
+        SkipWhite;
+        if look='I' then begin
+            Match('I'); 
+            if look='n' then begin
+                Match('n'); Match('t');
+                Result := MakeInt(Expression.r);
+            end else begin
+                Match('m');
+                Result := Expression.i;
+            end
+        end else if look='R' then begin
+            Match('R'); Match('e');
+            Result := Expression.r;
+        end;
+        Match('}')
     end else if IsAlpha(look) then begin
         nm := GetName;
         if nm = '_sqrt' then begin
@@ -399,6 +427,7 @@ begin
     uGrad:      Result := (Result / 200) * Pi;
     uTau:       Result := Result * Pi * 2;
     uPi:        Result := Result * Pi;
+    uImaginary: Result := Result * cmplx_i;
     // Needed for 'nyan thousand':
     uThousand:  Result := Result * 1000;
     end;
@@ -415,28 +444,28 @@ begin
         Match('^');
         x := Factor();
         ExplainPower(Result,x);
-        Result := Power(Result, MakeInt(x));
+        Result := sqrt.Power(Result, MakeInt(x));
         TellResult(Result)
     end;
     SkipWhite
 end;
 
-function Term: Extended;
-var a: extended;
+function Term: Complex;
+var a: Complex;
 begin
     Result := Factor;
     while look in ['*','/','\','#'] do
         case look of
         '*': begin Match('*'); a := Factor; ExplainMul(Result,a); Result *= a; TellResult(Result) end;
-        '/': begin Match('/'); a := Factor; ExplainDiv(Result,a); Result /= a; TellResult(Result) end;
-        '\': begin Match('\'); a := Factor; ExplainIntDiv(Result,a); Result := MakeInt(Result) div MakeInt(a); TellResult(Result) end;
-        '#': begin Match('#'); a := Factor; ExplainMod(Result,a); Result := MakeInt(Result) mod MakeInt(a); TellResult(Result) end;
+        '/': begin Match('/'); a := Factor; ExplainDiv(Result,a); if dontfollow then a := 1; Result /= a; TellResult(Result) end;
+        '\': begin Match('\'); a := Factor; ExplainIntDiv(Result,a); if dontfollow then a := 1; Result := MakeInt(Result) div MakeInt(a); TellResult(Result) end;
+        '#': begin Match('#'); a := Factor; ExplainMod(Result,a); if dontfollow then a := 1; Result := MakeInt(Result) mod MakeInt(a); TellResult(Result) end;
         end;
     SkipWhite
 end;
 
-function TermA: Extended;
-var nm: string; a: extended;
+function TermA: Complex;
+var nm: string; a: Complex;
 begin
     SkipWhite;
     if look in ['+','-'] then Result := 0
@@ -473,8 +502,8 @@ begin
     SkipWhite
 end;
 
-function Expression: Extended;
-var nm: string; b: extended;
+function Expression: Complex;
+var nm: string; b: Complex;
 begin
     Result := TermA;
     while look in ['f','C'] do
@@ -501,7 +530,7 @@ begin
     SkipWhite;
 end;
 
-function Eval: Extended;
+function Eval: Complex;
 var nm, v, arg: string; f, tz, c: boolean;
 begin
     SkipWhite;
@@ -553,4 +582,6 @@ begin
     end
 end;
 
+initialization
+    dontfollow := false;
 end.
