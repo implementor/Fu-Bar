@@ -325,12 +325,7 @@ begin
         Match('}')
     end else if IsAlpha(look) then begin
         nm := GetName;
-        if nm = '_sqrt' then begin
-            Match('(');
-            Result := Expression;
-            Match(')');
-            Result := sqrt.heron(Result)
-        end else if (nm = 'nrt') or (nm = 'Root') then begin
+        if (nm = 'nrt') or (nm = 'Root') then begin
             Match('(');
             Result := Expression;
             Match(';');

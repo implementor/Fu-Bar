@@ -58,6 +58,7 @@ begin
         answer := 0;
         InitVars;
         SetVar('tau',pi*2,true);        // alternative Kreiszahl Tau
+        SetVar('i',cmplx_i,true);       // imaginäre Zahl
         AutoLoad('autoload.dat');
         repeat
             Write('Enter a term: ');

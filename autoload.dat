@@ -1,4 +1,5 @@
-[!i] _sqrt(-1)
+[_sqrt(nonzero a)] iterate(a:(xn+(a/xn))/2)
+[_sqrt(0)] 0
 [!_abs(x)] _sqrt({Rex}^2+{Imx}^2)
 [!int(x)] {Intx}
 [!frac(x)] {Rex}-{Intx}
@@ -6,9 +7,9 @@
 [!Re(x)] {Rex}
 [!sign(nonzero x)] x/|{Rex}|
 [!sign(0)] 0
-[!raresqrt(nonzero a)] ?(sign(a)+1: iterate(a:(xn+(a/xn))/2); i*raresqrt(|a|))
+[!raresqrt(nonzero a)] ?(sign(a)+1: iterate(a:(xn+(a/xn))/2); i*_sqrt(|a|))
 [!raresqrt(0)] 0
-[!SquareRoot(nonzero a)] _sqrt(a)
+[!SquareRoot(nonzero a)] raresqrt(a)
 [!SquareRoot(0)] 0
 [!sqrt(a)] raresqrt(a)
 [!intvsqrt(a)] zero(x: x^2-a)
