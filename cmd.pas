@@ -27,10 +27,6 @@ procedure RunCommand;
 procedure OutHelp(const section: string; const fn: string = 'help.dat');
 procedure OutFullFile(const fn: string);
 
-var nyanmode: boolean;
-
-function Nyanize(x: Complex; relyonvar: boolean = true): string;
-
 implementation
 
 procedure OutHelp(const section: string; const fn: string = 'help.dat');
@@ -127,34 +123,6 @@ begin
         end else if nm = 'nyan' then Nyan
         else Outhelp(nm);
     end
-end;
-
-function Nyanize(x: Complex; relyonvar: boolean = true): string;
-begin
-    if (relyonvar and (not nyanmode)) or not SameValue(x.i,0) then begin
-        if SameValue(x.r,pi*2) and SameValue(x.i,0) then
-            Result := 'a full turn (tau, 2pi, 4eta)'
-        else if SameValue(x,pi) and SameValue(x.i,0) then
-            Result := 'a half turn (tau/2, pi, 2eta)'
-        else if SameValue(x,pi/2) and SameValue(x.i,0) then
-            Result := 'a quarter turn (tau/4, pi/2, eta)'
-        else if SameValue(x.i,0) then
-            Result := FloatToStr(x.r)
-        else if SameValue(x.r,0) and SameValue(x.i,1) then
-            Result := 'i'
-        else if SameValue(x.r,0) and SameValue(x.i,-1) then
-            Result := '-i'
-        else if SameValue(x.r,0) then
-            Result := FloatToStr(x.i) + 'i'
-        else if x.i<0 then
-            Result := FloatToStr(x.r) + ' - ' + FloatToStr(-x.i) + 'i'
-        else
-            Result := FloatToStr(x.r) + ' + ' + FloatToStr(x.i) + 'i'
-    end else if (x>8999.99) and (x<9000.01) then
-        Result := 'nyan thousand'
-    else if x < 9000 then
-        Result := 'below nyan thousand'
-    else Result := 'over nyan thousand'
 end;
 
 initialization

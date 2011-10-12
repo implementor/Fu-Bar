@@ -21,7 +21,7 @@ unit cradle;
 
 interface
 
-uses SysUtils, Math, buffer;
+uses SysUtils, Math, buffer, cmplx;
 
 var
     look: char;
@@ -44,6 +44,9 @@ function MakeInt(a:Extended): Int64; inline;
 function NumToStr(a:Extended): string; inline;
 procedure StartWatch;
 function StopWatch: DWord;
+function Nyanize(x: Complex; relyonvar: boolean = true): string;
+
+var nyanmode: boolean;
 
 implementation
 
@@ -170,6 +173,34 @@ var n: TDateTime;
 begin
     n := Now;
     Result := Floor((n-watch)*3600*24*1000)
+end;
+
+function Nyanize(x: Complex; relyonvar: boolean = true): string;
+begin
+    if (relyonvar and (not nyanmode)) or not SameValue(x.i,0) then begin
+        if SameValue(x.r,pi*2) and SameValue(x.i,0) then
+            Result := 'a full turn (tau, 2pi, 4eta)'
+        else if SameValue(x,pi) and SameValue(x.i,0) then
+            Result := 'a half turn (tau/2, pi, 2eta)'
+        else if SameValue(x,pi/2) and SameValue(x.i,0) then
+            Result := 'a quarter turn (tau/4, pi/2, eta)'
+        else if SameValue(x.i,0) then
+            Result := FloatToStr(x.r)
+        else if SameValue(x.r,0) and SameValue(x.i,1) then
+            Result := 'i'
+        else if SameValue(x.r,0) and SameValue(x.i,-1) then
+            Result := '-i'
+        else if SameValue(x.r,0) then
+            Result := FloatToStr(x.i) + 'i'
+        else if x.i<0 then
+            Result := FloatToStr(x.r) + ' - ' + FloatToStr(-x.i) + 'i'
+        else
+            Result := FloatToStr(x.r) + ' + ' + FloatToStr(x.i) + 'i'
+    end else if (x>8999.99) and (x<9000.01) then
+        Result := 'nyan thousand'
+    else if x < 9000 then
+        Result := 'below nyan thousand'
+    else Result := 'over nyan thousand'
 end;
 
 end.

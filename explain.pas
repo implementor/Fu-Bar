@@ -21,7 +21,7 @@ unit explain;
 
 interface
 
-uses prayerlist, sysutils, cradle;
+uses prayerlist, sysutils, cradle, cmplx;
 
 type
     TExplainList = specialize TPrayerList<string>;
@@ -33,29 +33,29 @@ procedure ClearExplanations;
 procedure IndentExplanations;
 procedure UnindentExplanations;
 
-procedure ExplainBinCoef(const n,k: extended);
-procedure ExplainAdd(const a,b:extended);
-procedure ExplainSub(const a,b:extended);
-procedure ExplainMul(const a,b:extended);
-procedure ExplainDiv(const a,b:extended);
-procedure ExplainIntDiv(const a,b:extended);
-procedure ExplainMod(const a,b:extended);
-procedure ExplainPower(const a,b:extended);
-procedure ExplainAnd(const a,b:extended);
-procedure ExplainOr(const a,b:extended);
-procedure ExplainXor(const a,b:extended);
-procedure ExplainConv(const a: extended; const c: byte);
-procedure ExplainFuncEnter(const name,vn: string; const x: extended);
-procedure ExplainFuncLeave(const name,vn: string; const x,r: extended);
-procedure ExplainAbs(const a: extended);
-procedure ExplainIterEnter(const x: extended);
-procedure ExplainIterLeave(const x: extended);
-procedure ExplainIterFix(const fix: extended);
-procedure ExplainSumEnter(const i: extended; const vn: string);
-procedure ExplainProdEnter(const i: extended; const vn: string);
-procedure ExplainSumLeave(const i,r: extended; const vn: string);
-procedure ExplainProdLeave(const i,r: extended; const vn: string);
-procedure TellResult(const r: extended);
+procedure ExplainBinCoef(const n,k: Complex);
+procedure ExplainAdd(const a,b:Complex);
+procedure ExplainSub(const a,b:Complex);
+procedure ExplainMul(const a,b:Complex);
+procedure ExplainDiv(const a,b:Complex);
+procedure ExplainIntDiv(const a,b:Complex);
+procedure ExplainMod(const a,b:Complex);
+procedure ExplainPower(const a,b:Complex);
+procedure ExplainAnd(const a,b:Complex);
+procedure ExplainOr(const a,b:Complex);
+procedure ExplainXor(const a,b:Complex);
+procedure ExplainConv(const a: Complex; const c: byte);
+procedure ExplainFuncEnter(const name,vn: string; const x: Complex);
+procedure ExplainFuncLeave(const name,vn: string; const x,r: Complex);
+procedure ExplainAbs(const a: Complex);
+procedure ExplainIterEnter(const x: Complex);
+procedure ExplainIterLeave(const x: Complex);
+procedure ExplainIterFix(const fix: Complex);
+procedure ExplainSumEnter(const i: Complex; const vn: string);
+procedure ExplainProdEnter(const i: Complex; const vn: string);
+procedure ExplainSumLeave(const i,r: Complex; const vn: string);
+procedure ExplainProdLeave(const i,r: Complex; const vn: string);
+procedure TellResult(const r: Complex);
 
 implementation
 
@@ -110,67 +110,67 @@ begin
         Dec(ind)
 end;
 
-procedure ExplainBinCoef(const n,k: extended);
+procedure ExplainBinCoef(const n,k: Complex);
 begin
     proto := 'From '+IntToStr(MakeInt(n))+' choose '+IntToStr(MakeInt(k))+' = %s'
 end;
 
-procedure ExplainAdd(const a,b:extended);
+procedure ExplainAdd(const a,b:Complex);
 begin
-    proto := FloatToStr(a)+' + '+FloatToStr(b)+' = %s';
+    proto := Nyanize(a)+' + '+Nyanize(b)+' = %s';
 end;
 
-procedure ExplainSub(const a,b:extended);
+procedure ExplainSub(const a,b:Complex);
 begin
-    proto := FloatToStr(a)+' - '+FloatToStr(b)+' = %s';
+    proto := Nyanize(a)+' - '+Nyanize(b)+' = %s';
 end;
 
-procedure ExplainMul(const a,b:extended);
+procedure ExplainMul(const a,b:Complex);
 begin
-    proto := FloatToStr(a)+' * '+FloatToStr(b)+' = %s';
+    proto := Nyanize(a)+' * '+Nyanize(b)+' = %s';
 end;
 
-procedure ExplainDiv(const a,b:extended);
+procedure ExplainDiv(const a,b:Complex);
 begin
-    proto := FloatToStr(a)+' / '+FloatToStr(b)+' = %s';
+    proto := Nyanize(a)+' / '+Nyanize(b)+' = %s';
 end;
 
-procedure TellResult(const r: extended);
+procedure TellResult(const r: Complex);
 begin
-    ExplainMe(Format('%s'+proto,[GetIndent,FloatToStr(r)]));
+    ExplainMe(Format('%s'+proto,[GetIndent,Nyanize(r)]));
 end;
 
-procedure ExplainIntDiv(const a,b:extended);
+procedure ExplainIntDiv(const a,b:Complex);
 begin
     proto := IntToStr(MakeInt(a))+' \ '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainMod(const a,b:extended);
+procedure ExplainMod(const a,b:Complex);
 begin
     proto := IntToStr(MakeInt(a))+' mod '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainPower(const a,b:extended);
+procedure ExplainPower(const a,b:Complex);
 begin
-    proto := FloatToStr(a)+' ^ '+IntToStr(MakeInt(b))+' = %s';
+    proto := Nyanize(a)+' ^ '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainAnd(const a,b:extended);
+procedure ExplainAnd(const a,b:Complex);
 begin
     proto := IntToStr(MakeInt(a))+' and '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainOr(const a,b:extended);
+procedure ExplainOr(const a,b:Complex);
 begin
     proto := IntToStr(MakeInt(a))+' or '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainXor(const a,b:extended);
+procedure ExplainXor(const a,b:Complex);
 begin
     proto := IntToStr(MakeInt(a))+' xor '+IntToStr(MakeInt(b))+' = %s';
 end;
 
-procedure ExplainConv(const a: extended; const c: byte);
+procedure ExplainConv(const a: Complex; const c: byte);
 var u: string;
 begin
     case c of
@@ -181,57 +181,57 @@ begin
     4: u := 'pi radian(s)';
     5: u := 'thousand radians';
     end;
-    proto := 'Convert '+FloatToStr(a)+' '+u+' to %s radian(s)';
+    proto := 'Convert '+Nyanize(a)+' '+u+' to %s radian(s)';
 end;
 
-procedure ExplainFuncEnter(const name,vn: string; const x: extended);
+procedure ExplainFuncEnter(const name,vn: string; const x: Complex);
 begin
-    Explainme(GetIndent+'Enter function '+name+'('+vn+'='+FloatToStr(x)+')');
+    Explainme(GetIndent+'Enter function '+name+'('+vn+'='+Nyanize(x)+')');
 end;
 
-procedure ExplainFuncLeave(const name,vn: string; const x,r: extended);
+procedure ExplainFuncLeave(const name,vn: string; const x,r: Complex);
 begin
-    Explainme(GetIndent+'Leave function '+name+'('+vn+'='+FloatToStr(x)+'), resulting '+FloatToStr(r));
+    Explainme(GetIndent+'Leave function '+name+'('+vn+'='+Nyanize(x)+'), resulting '+Nyanize(r));
 end;
 
-procedure ExplainAbs(const a: extended);
+procedure ExplainAbs(const a: Complex);
 begin
-    proto := '|'+FloatToStr(a)+'| = %s';
+    proto := '|'+Nyanize(a)+'| = %s';
 end;
 
-procedure ExplainIterEnter(const x: extended);
+procedure ExplainIterEnter(const x: Complex);
 begin
-    Explainme(GetIndent+'Enter iteration with x[n]='+FloatToStr(x));
+    Explainme(GetIndent+'Enter iteration with x[n]='+Nyanize(x));
 end;
 
-procedure ExplainIterLeave(const x: extended);
+procedure ExplainIterLeave(const x: Complex);
 begin
-    Explainme(GetIndent+'Leave iteration with x[n+1]='+FloatToStr(x));
+    Explainme(GetIndent+'Leave iteration with x[n+1]='+Nyanize(x));
 end;
 
-procedure ExplainIterFix(const fix: extended);
+procedure ExplainIterFix(const fix: Complex);
 begin
-    Explainme(GetIndent+'Reached fix point '+FloatToStr(fix));
+    Explainme(GetIndent+'Reached fix point '+Nyanize(fix));
 end;
 
-procedure ExplainSumEnter(const i: extended; const vn: string);
+procedure ExplainSumEnter(const i: Complex; const vn: string);
 begin
-    ExplainMe(GetIndent+'Enter sum loop with '+vn+'='+FloatToStr(i));
+    ExplainMe(GetIndent+'Enter sum loop with '+vn+'='+Nyanize(i));
 end;
 
-procedure ExplainProdEnter(const i: extended; const vn: string);
+procedure ExplainProdEnter(const i: Complex; const vn: string);
 begin
-    ExplainMe(GetIndent+'Enter product loop with '+vn+'='+FloatToStr(i));
+    ExplainMe(GetIndent+'Enter product loop with '+vn+'='+Nyanize(i));
 end;
 
-procedure ExplainSumLeave(const i,r: extended; const vn: string);
+procedure ExplainSumLeave(const i,r: Complex; const vn: string);
 begin
-    ExplainMe(GetIndent+'Leave sum loop with '+vn+'='+FloatToStr(i)+', resulting '+FloatToStr(r));
+    ExplainMe(GetIndent+'Leave sum loop with '+vn+'='+Nyanize(i)+', resulting '+Nyanize(r));
 end;
 
-procedure ExplainProdLeave(const i,r: extended; const vn: string);
+procedure ExplainProdLeave(const i,r: Complex; const vn: string);
 begin
-    ExplainMe(GetIndent+'Enter sum loop with '+vn+'='+FloatToStr(i)+', resulting '+FloatToStr(r));
+    ExplainMe(GetIndent+'Leave product loop with '+vn+'='+Nyanize(i)+', resulting '+Nyanize(r));
 end;
 
 initialization
