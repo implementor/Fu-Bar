@@ -80,8 +80,8 @@ end;
 function RunFunc(const name: string; const x: Complex): Complex;
 var
     vn,b: string;
-    tz: boolean;
-    vv: Complex;
+    ds: TDefSet;
+    vv,y: Complex;
     l: char;
     z: boolean;
 begin
@@ -90,24 +90,30 @@ begin
     else begin
         if not FuncExists(name) then
             Error('Func '+name+' is undefined!');
-        b := GetFunc(name,tz,vn);
-        z := (not tz) and (x=Complex(0));
+        b := GetFunc(name,ds,vn);
+        z := (not TakeZero(ds)) and (x=Complex(0));
         if z and (not VarExists(name+'0')) then
             Error('Func '+name+' is undefined for '+vn+'=0')
         else if z then
             Result := GetVar(name+'0')
         else begin
+            y := x;
+            case ds of
+            dsRational,dsRational0:     y := y.r;
+            dsInteger,dsInteger0:       y := Floor(y.r);
+            dsNatural,dsNatural0:       y := Floor(Abs(y.r));
+            end;
             PushBuffer;
             UpdateBuffer(b);
             l := look;
             GetChar;
             vv := GetVar(vn);
-            SetVar(vn, x);
-            ExplainFuncEnter(name,vn,x);
+            SetVar(vn, y);
+            ExplainFuncEnter(name,vn,y);
             IndentExplanations;
             Result := Expression;
             UnindentExplanations;
-            ExplainFuncLeave(name,vn,x,result);
+            ExplainFuncLeave(name,vn,y,result);
             SetVar(vn, vv);
             PopBuffer;
             look := l;
@@ -369,7 +375,7 @@ begin
             e := ReadPointer;
             t2 := '_'+numtostr(xid);
             Inc(xid);
-            SetFunc(t2,CopyBuffer(a-1,e-1),true,t);
+            SetFunc(t2,CopyBuffer(a-1,e-1),dsComplex0,t);
             Result := FindZero(-1000000,1000000,t2);
             //Result := RunFunc(t2, 45);
             Match(')');
@@ -394,7 +400,7 @@ begin
             e := ReadPointer;
             r := CopyBuffer(a-1,e-1);
             Match(')');
-            SetFunc(t2,'('+l+')-('+r+')',true,t);
+            SetFunc(t2,'('+l+')-('+r+')',dsComplex0,t);
             Result := FindZero(-100,100,t2);
         end else if nm = 'sum' then
             Result := Shortsum
@@ -529,7 +535,10 @@ begin
 end;
 
 function Eval: Complex;
-var nm, v, arg: string; f, tz, c: boolean;
+var 
+    nm, v, arg: string; 
+    f, c: boolean;
+    ds: TDefSet;
 begin
     SkipWhite;
     f := false;
@@ -545,7 +554,7 @@ begin
         SkipWhite;
         if look='(' then begin
             f := true;
-            tz := true;
+            ds := dsComplex0;
             Match('(');
             SkipWhite;
             if look='0' then begin
@@ -554,7 +563,29 @@ begin
             end else arg := GetName;
             SkipWhite;
             if arg = 'nonzero' then begin
-                tz := false;
+                ds := dsComplex;
+                arg := GetName;
+                SkipWhite
+            end;
+            if arg = 'complex' then begin
+                arg := GetName;
+                SkipWhite
+            end else if (arg = 'rational') or (arg = 'real') then begin
+                if ds=dsComplex then
+                    ds := dsRational
+                else ds := dsRational0;
+                arg := GetName;
+                SkipWhite
+            end else if arg = 'integer' then begin
+                if ds=dsComplex then
+                    ds := dsInteger
+                else ds := dsInteger0;
+                arg := GetName;
+                SkipWhite
+            end else if arg = 'natural' then begin
+                if ds=dsComplex then
+                    ds := dsNatural
+                else ds := dsNatural0;
                 arg := GetName;
                 SkipWhite
             end;
@@ -572,8 +603,8 @@ begin
     end else begin
         nm := ReadRemaining;
         look := ReadBuffer;
-        SetFunc(v,nm,tz,arg,c);
-        if tz then
+        SetFunc(v,nm,ds,arg,c);
+        if TakeZero(ds) then
             Result := RunFunc(v,0)
         else
             Result := RunFunc(v,1)

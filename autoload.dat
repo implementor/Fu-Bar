@@ -1,17 +1,17 @@
-[_sqrt(nonzero a)] iterate(a:(xn+(a/xn))/2)
+[_sqrt(nonzero rational a)] iterate(a:(xn+(a/xn))/2)
 [_sqrt(0)] 0
-[!_abs(x)] _sqrt({Rex}^2+{Imx}^2)
-[!int(x)] {Intx}
-[!frac(x)] {Rex}-{Intx}
-[!Im(x)] {Imx}
-[!Re(x)] {Rex}
-[!sign(nonzero x)] x/|{Rex}|
+[!_abs(complex x)] _sqrt({Rex}^2+{Imx}^2)
+[!int(complex x)] {Intx}
+[!frac(rational x)] x-int(x)
+[!Im(complex x)] {Imx}
+[!Re(complex x)] {Rex}
+[!sign(nonzero rational x)] x/|{Rex}|
 [!sign(0)] 0
-[!raresqrt(nonzero a)] ?(sign(a)+1: iterate(a:(xn+(a/xn))/2); i*_sqrt(|a|))
+[!raresqrt(nonzero rational a)] ?(sign(a)+1: iterate(a:(xn+(a/xn))/2); i*_sqrt(|a|))
 [!raresqrt(0)] 0
-[!SquareRoot(nonzero a)] raresqrt(a)
+[!SquareRoot(rational a)] ?(a:raresqrt(a))
 [!SquareRoot(0)] 0
-[!sqrt(a)] raresqrt(a)
+[!sqrt(rational a)] ?(a: raresqrt(a))
 [!intvsqrt(a)] zero(x: x^2-a)
 [!rarecbrt(nonzero a)] iterate(?(a; 1): (2*xn^3+a)/(3*xn^2))
 [!rarecbrt(0)] 0
@@ -21,20 +21,20 @@
 [!intvcbrt(a)] zero(x: x^3-a)
 [!pi] tau/2
 [!eta] tau/4
-[!tau(x)] x tau
-[!pi(x)] x pi
-[!eta(x)] x*eta
-[!deg(r)] (r/tau)*360
-[!grad(r)] (r/tau)*400
-[!rad(r)] r
-[!me(x)] x
-[!abs(x)] |x|
-[!rev(r)] r/tau
+[!tau(complex x)] x tau
+[!pi(complex x)] x pi
+[!eta(complex x)] x*eta
+[!deg(complex r)] (r/tau)*360
+[!grad(complex r)] (r/tau)*400
+[!rad(complex r)] r
+[!me(complex x)] x
+[!abs(complex x)] |x|
+[!rev(complex r)] r/tau
 [!_fac(0)] 1
-[!_fac(nonzero n)] product(j: 1<n; j)
-[!fac(nonzero n)] sign(n)*_fac(|n|)
+[!_fac(nonzero natural n)] product(j: 1<n; j)
+[!fac(nonzero integer n)] sign(n)*_fac(|n|)
 [!fac(0)] 1
-[!rec(nonzero x)] 1/x
+[!rec(nonzero complex x)] 1/x
 [!TheAnswerOfLifeUniverseAndEverything] 42
 [!phi] (1+sqrt(5))/2
 [!e] 2.7182818

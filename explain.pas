@@ -180,6 +180,7 @@ begin
     3: u := 'tau radian(s)';
     4: u := 'pi radian(s)';
     5: u := 'thousand radians';
+    6: u := 'imaginary radians';
     end;
     proto := 'Convert '+Nyanize(a)+' '+u+' to %s radian(s)';
 end;

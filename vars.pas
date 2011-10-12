@@ -31,9 +31,12 @@ type
     end;
     PVariable = ^TVariable;
     TVarList = specialize TPrayerList<PVariable>;
+    TDefSet = (dsNatural0, dsNatural, dsInteger0, dsInteger, dsRational0,
+                dsRational, dsComplex0, dsComplex);
     TFunction = record
         Name, Expr, vname: string;
-        TakeZero, IsConst: Boolean;
+        IsConst: Boolean;
+        DefSet: TDefSet;
     end;
     PFunction = ^TFunction;
     TFuncList = specialize TPrayerList<PFunction>;
@@ -48,9 +51,11 @@ function GetVar(const name: string): Complex;
 procedure SetVar(const name: string; const val: Complex; const setconst: boolean = false);
 function VarExists(const name: string): Boolean;
 function GetFunc(const name: string): string; overload;
-function GetFunc(const name: string; out takezero: boolean; out vname: string): string; overload;
-procedure SetFunc(const name, expr: string; const takezero: boolean = true; const vname: string = 'x'; const setconst: boolean = false);
+function GetFunc(const name: string; out defset: TDefSet; out vname: string): string; overload;
+procedure SetFunc(const name, expr: string; const defset: TDefSet = dsComplex; const vname: string = 'x'; const setconst: boolean = false);
 function FuncExists(const name: string): Boolean;
+
+function TakeZero(const ds: TDefSet): Boolean;
 
 implementation
 
@@ -125,7 +130,7 @@ begin
             Result := Funclist[i]^.expr
 end;
 
-function GetFunc(const name: string; out takezero: boolean; out vname: string): string;
+function GetFunc(const name: string; out defset: TDefSet; out vname: string): string;
 var i: word;
 begin
     Result := '';
@@ -134,12 +139,12 @@ begin
         if Funclist[i]^.name=name then
         begin
             Result := Funclist[i]^.expr;
-            takezero := Funclist[i]^.takezero;
+            defset := Funclist[i]^.defset;
             vname := Funclist[i]^.vname
         end
 end;
 
-procedure SetFunc(const name, expr: string; const takezero: boolean = true; const vname: string = 'x'; const setconst: boolean = false);
+procedure SetFunc(const name, expr: string; const defset: TDefSet = dsComplex; const vname: string = 'x'; const setconst: boolean = false);
 var v: PFunction; i: word; e: boolean;
 begin
     e := false;
@@ -150,7 +155,7 @@ begin
             if Funclist[i]^.isconst then
                 Error('Cannot write read-only func '''+name+'''');
             Funclist[i]^.expr := expr;
-            Funclist[i]^.takezero := takezero;
+            Funclist[i]^.defset := defset;
             Funclist[i]^.vname := vname;
             Funclist[i]^.isconst := setconst;
         end;
@@ -158,7 +163,7 @@ begin
         New(v);
         v^.name := name;
         v^.expr := expr;
-        v^.TakeZero := takezero;
+        v^.DefSet := defset;
         v^.vname := vname;
         v^.isconst := setconst;
         Funclist.Add(v)
@@ -172,6 +177,11 @@ begin
     if Funclist.Count > 0 then
     for i := 0 to Funclist.Count-1 do
         Result := Result or (Funclist[i]^.name=name)
+end;
+
+function TakeZero(const ds: TDefSet): Boolean;
+begin
+    Result := ds in [dsNatural0, dsInteger0, dsRational0, dsComplex0];
 end;
 
 end.

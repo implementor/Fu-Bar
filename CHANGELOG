@@ -1,6 +1,11 @@
 Fu Bar -- Changelog
 ======================================
 
+Fu Bar 1.2
+------------
+Function domains are now individually customizable.
+The new keywords 'complex', 'rational', 'integer' and 'natural' are introduced.
+
 Fu Bar 1.1a c2, c3, c4
 ------------
 Fixed some bugs, tidied up.
