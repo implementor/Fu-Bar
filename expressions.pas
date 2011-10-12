@@ -175,7 +175,7 @@ end;
 
 function ShortProduct: Complex;
 var
-    x, y, step: Complex; 
+    x, y, step, vx: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -195,9 +195,13 @@ begin
     Match(';');
     Result := 1;
     l := look;
-    if x >= y then
-        Expression
-    else begin
+    if x >= y then begin
+        vx := GetVar(v);
+        SetVar(v,1);
+        Expression;
+        SetVar(v,vx)
+    end else begin
+        vx := GetVar(v);
         while x <= y do begin
             SetVar(v,x);
             PushPointer;
@@ -208,6 +212,7 @@ begin
             look := l;
             x += step;
         end;
+        SetVar(v,vx);
         UpdatePointer(ret);
         look := rl;
     end;
@@ -324,16 +329,6 @@ begin
             k := MakeInt(Expression);
             Match(')');
             Result := sqrt.heron(Result,k)
-        end else if (nm = '_sin') then begin
-            Match('(');
-            Result := Expression;
-            Match(')');
-            Result := Sin(Result)
-        end else if nm = '_cos' then begin
-            Match('(');
-            Result := Expression;
-            Match(')');
-            Result := Cos(Result)
         end else if nm = '_mof' then begin
             Match('(');
             x := Expression;

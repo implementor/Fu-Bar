@@ -30,8 +30,9 @@
 [!abs(x)] |x|
 [!rev(r)] r/tau
 [!_fac(0)] 1
-[!_fac(nonzero n)] |n|*_fac(|n|-1)
-[!fac(n)] sign(n)*_fac(|n|)
+[!_fac(nonzero n)] product(j: 1<n; j)
+[!fac(nonzero n)] sign(n)*_fac(|n|)
+[!fac(0)] 1
 [!rec(nonzero x)] 1/x
 [!TheAnswerOfLifeUniverseAndEverything] 42
 [!phi] (1+sqrt(5))/2
@@ -56,8 +57,8 @@
 [!half(x)] half*x
 [!full(x)] x
 [!quarter(x)] quarter*x
-[!sin_(x)] ?(_mof(pi:x): 0; _sin(x))
-[!cos_(x)] ?(_mof(pi:x+eta): 0; _cos(x))
+[!_cos(x)] sum(j: 0<20; (-1)^j*(x^(2*j)/fac(2*j)))
+[!_sin(x)] sum(j: 0<20; (-1)^j*(x^(2*j+1)/fac(2*j+1)))
 [!sin(x)] ?(_sin(x); 0)
 [!cos(x)] ?(_cos(x); 0)
 [!not(x)] -int(x)-1
