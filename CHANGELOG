@@ -1,10 +1,11 @@
 Fu Bar -- Changelog
 ======================================
 
-Fu Bar 1.1a c2, c3
+Fu Bar 1.1a c2, c3, c4
 ------------
 Fixed some bugs, tidied up.
 Introduced explanations for sum(...) and product(...).
+Reinforced softcode sqrt() by removing its built-in equivalent.
 
 Fu Bar 1.1a
 ------------
