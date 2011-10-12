@@ -14,7 +14,7 @@
 [!intvsqrt(a)] zero(x: x^2-a)
 [!rarecbrt(nonzero a)] iterate(?(a; 1): (2*xn^3+a)/(3*xn^2))
 [!rarecbrt(0)] 0
-[!CubeRoot(nonzero a)] _cbrt(a)
+[!CubeRoot(nonzero a)] rarecbrt(a)
 [!CubeRoot(0)] 0
 [!cbrt(a)] rarecbrt(a)
 [!intvcbrt(a)] zero(x: x^3-a)

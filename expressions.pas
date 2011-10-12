@@ -134,7 +134,7 @@ end;
 
 function Shortsum: Complex;
 var
-    x, y, step: Complex; 
+    x, y, step, vx: Complex; 
     ret: word; 
     l, rl: char;
     v: string;
@@ -154,19 +154,28 @@ begin
     Match(';');
     Result := 0;
     l := look;
-    if x >= y then
-        Expression
-    else begin
+    if x >= y then begin
+        vx := GetVar(v);
+        SetVar(v,0);
+        Expression;
+        SetVar(v,vx);
+    end else begin
+        vx := GetVar(v);
         while x <= y do begin
             SetVar(v,x);
             PushPointer;
+            ExplainSumEnter(x,v);
+            IndentExplanations;
             Result += Expression;
+            UnindentExplanations;
+            ExplainSumLeave(x,Result,v);
             ret := ReadPointer;
             rl := look;
             PopPointer;
             look := l;
             x += step;
         end;
+        SetVar(v,vx);
         UpdatePointer(ret);
         look := rl;
     end;
@@ -205,7 +214,11 @@ begin
         while x <= y do begin
             SetVar(v,x);
             PushPointer;
+            ExplainProdEnter(x,v);
+            IndentExplanations;
             Result *= Expression;
+            UnindentExplanations;
+            ExplainProdLeave(x,Result,v);
             ret := ReadPointer;
             rl := look;
             PopPointer;
@@ -317,11 +330,6 @@ begin
             Result := Expression;
             Match(')');
             Result := sqrt.heron(Result)
-        end else if nm = '_cbrt' then begin
-            Match('(');
-            Result := Expression;
-            Match(')');
-            Result := sqrt.heron(Result,3)
         end else if (nm = 'nrt') or (nm = 'Root') then begin
             Match('(');
             Result := Expression;

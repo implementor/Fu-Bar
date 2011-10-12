@@ -51,6 +51,10 @@ procedure ExplainAbs(const a: extended);
 procedure ExplainIterEnter(const x: extended);
 procedure ExplainIterLeave(const x: extended);
 procedure ExplainIterFix(const fix: extended);
+procedure ExplainSumEnter(const i: extended; const vn: string);
+procedure ExplainProdEnter(const i: extended; const vn: string);
+procedure ExplainSumLeave(const i,r: extended; const vn: string);
+procedure ExplainProdLeave(const i,r: extended; const vn: string);
 procedure TellResult(const r: extended);
 
 implementation
@@ -132,12 +136,8 @@ begin
 end;
 
 procedure TellResult(const r: extended);
-var s: string; i: word;
 begin
-    s := '';
-    for i := 1 to ind do
-        s += '  ';
-    ExplainMe(Format('%s'+proto,[s,FloatToStr(r)]));
+    ExplainMe(Format('%s'+proto,[GetIndent,FloatToStr(r)]));
 end;
 
 procedure ExplainIntDiv(const a,b:extended);
@@ -185,21 +185,13 @@ begin
 end;
 
 procedure ExplainFuncEnter(const name,vn: string; const x: extended);
-var s: string; i: word;
 begin
-    s := '';
-    for i := 1 to ind do
-        s += '  ';
-    Explainme(s+'Enter function '+name+'('+vn+'='+FloatToStr(x)+')');
+    Explainme(GetIndent+'Enter function '+name+'('+vn+'='+FloatToStr(x)+')');
 end;
 
 procedure ExplainFuncLeave(const name,vn: string; const x,r: extended);
-var s: string; i: word;
 begin
-    s := '';
-    for i := 1 to ind do
-        s += '  ';
-    Explainme(s+'Leave function '+name+'('+vn+'='+FloatToStr(x)+'), resulting '+FloatToStr(r));
+    Explainme(GetIndent+'Leave function '+name+'('+vn+'='+FloatToStr(x)+'), resulting '+FloatToStr(r));
 end;
 
 procedure ExplainAbs(const a: extended);
@@ -220,6 +212,26 @@ end;
 procedure ExplainIterFix(const fix: extended);
 begin
     Explainme(GetIndent+'Reached fix point '+FloatToStr(fix));
+end;
+
+procedure ExplainSumEnter(const i: extended; const vn: string);
+begin
+    ExplainMe(GetIndent+'Enter sum loop with '+vn+'='+FloatToStr(i));
+end;
+
+procedure ExplainProdEnter(const i: extended; const vn: string);
+begin
+    ExplainMe(GetIndent+'Enter product loop with '+vn+'='+FloatToStr(i));
+end;
+
+procedure ExplainSumLeave(const i,r: extended; const vn: string);
+begin
+    ExplainMe(GetIndent+'Leave sum loop with '+vn+'='+FloatToStr(i)+', resulting '+FloatToStr(r));
+end;
+
+procedure ExplainProdLeave(const i,r: extended; const vn: string);
+begin
+    ExplainMe(GetIndent+'Enter sum loop with '+vn+'='+FloatToStr(i)+', resulting '+FloatToStr(r));
 end;
 
 initialization
