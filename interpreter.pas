@@ -21,7 +21,7 @@ unit interpreter;
 
 interface
 
-uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain, cmplx;
+uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain, cmplx, arguments;
 
 procedure StartInterpreter;
 
@@ -59,66 +59,78 @@ begin
         InitVars;
         SetVar('tau',pi*2,true);        // alternative Kreiszahl Tau
         SetVar('i',cmplx_i,true);       // imaginäre Zahl
-        AutoLoad('autoload.dat');
+        if not ArgInstant then
+          AutoLoad(PathAutoload);
         repeat
+          if not ArgQuiet then
             Write('Enter a term: ');
-            Readln(l);
-            UpdateBuffer(l);
-            GetChar;
-            SkipWhite;
+          if ArgTerm = '' then
+            Readln(l)
+          else l := ArgTerm;
+          UpdateBuffer(l);
+          GetChar;
+          SkipWhite;
+          try
             if look = ':' then
-                RunCommand
+              RunCommand
             else begin
-                if look <> #10 then
-                    x := Eval
-                else begin x := 0; q := true end;
-                if look <> '=' then begin
-                    if look<>#10 then Expected('Linebreak',look);
-                    WriteLn('Result: ',Nyanize(x))
-                end else begin
-                    Match('=');
-                    y := Eval;
-                    if look<>#10 then Expected('Linebreak',look);
-                    if SameValue(x,y) then begin
-                        Writeln('True! L = R');
-                        Writeln('Result: ',Nyanize(x))
-                    end else if x < y then begin
-                        Writeln('False! L < R');
-                        Writeln('Result for L: ',Nyanize(x));
-                        Writeln('Result for R: ',Nyanize(y));
-                        Writeln('Result for R-L: ',Nyanize(y-x));
-                        if x<>0 then
-                            Writeln('Result for R/L: ',Nyanize(y/x))
-                    end else if x > y then begin
-                        Writeln('False! L > R');
-                        Writeln('Result for L: ',Nyanize(x));
-                        Writeln('Result for R: ',Nyanize(y));
-                        Writeln('Result for L-R: ',Nyanize(x-y));
-                        if y<>0 then
-                            Writeln('Result for L/R: ',Nyanize(x/y))
-                    end
-                end;
-                Answer := x
+              if look <> #10 then
+                x := Eval
+              else begin x := 0; q := true end;
+              if look <> '=' then begin
+                if look<>#10 then Expected('Linebreak',look);
+                if not ArgQuiet then Write('Result: ');
+                if l<>'' then
+                  Writeln(Nyanize(x))
+              end else begin
+                Match('=');
+                y := Eval;
+                if look<>#10 then Expected('Linebreak',look);
+                if SameValue(x,y) then begin
+                  Writeln('True! L = R');
+                  Writeln('Result: ',Nyanize(x))
+                end else if x < y then begin
+                  Writeln('False! L < R');
+                  Writeln('Result for L: ',Nyanize(x));
+                  Writeln('Result for R: ',Nyanize(y));
+                  Writeln('Result for R-L: ',Nyanize(y-x));
+                  if x<>0 then
+                    Writeln('Result for R/L: ',Nyanize(y/x))
+                end else if x > y then begin
+                  Writeln('False! L > R');
+                  Writeln('Result for L: ',Nyanize(x));
+                  Writeln('Result for R: ',Nyanize(y));
+                  Writeln('Result for L-R: ',Nyanize(x-y));
+                  if y<>0 then
+                    Writeln('Result for L/R: ',Nyanize(x/y))
+                end
+              end;
+              Answer := x
             end;
+          except
+            on E: ECodeMistake do
+            Writeln(StdErr,E.Message);
+            on E: EDivByZero do
+            Writeln(StdErr,'Illegal zero division.');
+            on E: EZeroDivide do
+            Writeln(StdErr,'Illegal zero division.');
+            on E: EInvalidOp do
+            Writeln(StdErr,'Illegal operation.');
+          end;
+          if not ArgQuiet then
             Writeln;
-            ClearExplanations;
-        until q;
+          ClearExplanations;
+        until q or (ArgTerm<>'');
         successful := true;
     except
         on E: ECodeMistake do
-            Writeln(E.Message);
+            Writeln(StdErr,E.Message);
         on E: EAccessViolation do
-            Writeln('Damn, that''s a fatal error. What did you do? Oo');
-        on E: EDivByZero do
-            Writeln('You cannot divide by zero! Shame on you!');
-        on E: EZeroDivide do
-            Writeln('You cannot divide by zero! Shame on you!');
-        on E: EInvalidOp do
-            Writeln('WTF, please tell me how to do this! Oo');
+            Writeln(StdErr,'I got an access violation. I''m really sorry about that bug.');
         on E: EStackOverflow do
-            Writeln('Stop it! I''ve got a stack overflow! You are responsible for this!');
+            Writeln(StdErr,'I got a stack overflow. I''m really sorry about that bug.');
         on E: Exception do
-            Writeln('WTF, I don''t know, what''s wrong here! => '+E.Classname);
+            Writeln(StdErr,E.Classname,' => ',E.Message);
     end;
     FreeVars
 end;

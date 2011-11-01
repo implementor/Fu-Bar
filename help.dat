@@ -181,7 +181,8 @@ Was ist eine Kaffeemaschine?
 Hello, my name is Fu Bar and I'm your butler.
 What may I do for you?
 
-Type ':help' for a list of my skills.
+Type ':help' for a list of my skills, or ':help TOPIC' 
+for specific help on a keyword.
 I am free software. For further information, type ':license'!
 To read the full license text, type ':fullgpl'.
 Type ':readme' to read further comments.
@@ -468,4 +469,22 @@ e.g. product(i: 1<5; i) = 5! = 120
 Iterations: iterate(firstx: iteration)
 Runs an iterations starting at firstx.
 e.g. iterate(4: (xn+(9/xn))/2) = sqrt(9) = 3
+:end
+
+:begin:--help
+Fu Bar, a term-parsing calculator.
+Copyright (c) 2011 Marvin Cohrs
+Distributed under the terms of the GNU General Public License.
+
+Usage: fubar [-i|--instant] [-q|--quiet] [[-t|--term] TERM]
+       fubar --about TOPIC
+
+  -i --instant      Do not load my ~/.fubar-autoload
+  -q --quiet        Be quiet.
+  -t --term TERM    Calculate the given term.
+     --help         This help screen.
+     --about TOPIC  Displays help about a specific topic.
+     
+Specifying a term automatically implies a quiet start.
+     
 :end

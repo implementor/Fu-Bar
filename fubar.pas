@@ -17,11 +17,18 @@
 
 program fubar;
 
-uses interpreter, cmd;
+uses interpreter, cmd, arguments;
 
 begin
-    OutHelp('startup');
-    StartInterpreter;
-    Readln;
-    if not successful then readln
+    ExitCode := 42;
+    if ArgHelp then
+      OutHelp('--help')
+    else if ArgTopic<>'' then
+      OutHelp('help:'+ArgTopic)
+    else begin
+      if not ArgQuiet then
+        OutHelp('startup');
+      StartInterpreter;
+    end;
+    ExitCode := 0;
 end.
