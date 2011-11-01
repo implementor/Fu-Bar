@@ -36,6 +36,7 @@ Files:
     -> cmply.pas        Fu Bar      Source  GPL  Marvin Cohrs
     -> explain.pas      Fu Bar      Source  GPL  Marvin Cohrs
     -> tree.pas         Fu Bar      Source  GPL  Marvin Cohrs
+    -> arguments.pas    Fu Bar      Source  GPL  Marvin Cohrs
     -> autoload.dat     Fu Bar      Source  GPL  Marvin Cohrs
     -> prayerlist.pas   Prayer      Source  GPL  Marvin Cohrs
     -> fubar            Fu Bar      Binary (amd64/linux)
@@ -48,3 +49,18 @@ Thanks to Jack W. Crenshaw, for writing the great compiler-construction
 tutorial "Let's Build a Compiler!"
 
 And - Dear User - I've hidden some easter eggs. Come on, find them ;)
+
+
+Usage: fubar [-i|--instant] [-q|--quiet] [[-t|--term] TERM]
+       fubar --safe [[-t|--term] TERM]
+       fubar --about TOPIC
+       
+  -i --instant        Do not load my ~/.config/fubar/autoload
+  -q --quiet          Be quiet.
+  -t --term TERM      Calculate the given term.
+     --safe           Safe-mode, does not read or modify any file.
+     --help           Help screen.
+     --about TOPIC    Help about a specific topic.
+     
+--term implies -q
+--safe implies -qi
