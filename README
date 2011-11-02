@@ -33,7 +33,7 @@ Files:
     -> vars.pas         Fu Bar      Source  GPL  Marvin Cohrs
     -> cmd.pas          Fu Bar      Source  GPL  Marvin Cohrs
     -> buffer.pas       Fu Bar      Source  GPL  Marvin Cohrs
-    -> cmply.pas        Fu Bar      Source  GPL  Marvin Cohrs
+    -> cmplx.pas        Fu Bar      Source  GPL  Marvin Cohrs
     -> explain.pas      Fu Bar      Source  GPL  Marvin Cohrs
     -> tree.pas         Fu Bar      Source  GPL  Marvin Cohrs
     -> arguments.pas    Fu Bar      Source  GPL  Marvin Cohrs
