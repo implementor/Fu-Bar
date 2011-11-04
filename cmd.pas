@@ -21,18 +21,21 @@ unit cmd;
 
 interface
 
-uses cradle, expressions, sysutils, math, buffer, explain, cmplx;
+uses cradle, expressions, sysutils, math, buffer, explain, cmplx, arguments;
 
 procedure RunCommand;
-procedure OutHelp(const section: string; const fn: string = 'help.dat');
+procedure OutHelp(const section: string; const fn: string = '$def');
 procedure OutFullFile(const fn: string);
 
 implementation
 
-procedure OutHelp(const section: string; const fn: string = 'help.dat');
+procedure OutHelp(const section: string; const fn: string = '$def');
 var f: system.text; s: boolean; l: string; i: byte;
 begin
-    Assign(f,fn);
+    if ArgNoman then Error('Manual is disabled.');
+    if fn='$def' then
+      Assign(f,PathHelp)
+    else Assign(f,fn);
     Reset(f);
     try
         s := false;

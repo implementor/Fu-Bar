@@ -24,20 +24,21 @@ interface
 uses getopts, sysutils;
 
 var
-  ArgInstant, ArgHelp, ArgQuiet, ArgSafe: Boolean;
+  ArgInstant, ArgHelp, ArgQuiet, ArgSafe, ArgNoman: Boolean;
   ArgTerm, ArgTopic: string;
-  PathAutoload: string;
+  PathAutoload, PathHelp: string;
 
 implementation
 
 const
-  Options: array[1..6] of TOption = (
+  Options: array[1..7] of TOption = (
       (name: 'instant'; has_arg: 0; flag: nil; value: 'i'),
       (name: 'help'; has_arg: 0; flag: nil; value: #0),
       (name: 'quiet'; has_arg: 0; flag: nil; value: 'q'),
       (name: 'about'; has_arg: 1; flag: nil; value: #0),
       (name: 'term'; has_arg: 1; flag: nil; value: 't'),
-      (name: 'safe'; has_arg: 0; flag: nil; value: #0)
+      (name: 'safe'; has_arg: 0; flag: nil; value: #0),
+      (name: 'noman'; has_arg: 0; flag: nil; value: #0)
     );
 
 var c: char; idx: integer; f1, f2: file of byte; b: byte;
@@ -48,9 +49,11 @@ begin
   ArgHelp := false;
   ArgQuiet := false;
   ArgSafe := false;
+  ArgNoman := false;
   ArgTerm := '';
   ArgTopic := '';
   PathAutoload := GetAppConfigDir(false)+PathDelim+'autoload';
+  PathHelp := GetAppConfigDir(false)+PathDelim+'help';
   repeat
     c:=getlongopts('iqt:',@options[1],idx);
     case c of
@@ -58,6 +61,7 @@ begin
            2:  ArgHelp := true;
            4:  ArgTopic := optarg;
            6:  ArgSafe := true;
+           7:  ArgNoman := true;
            end;
       'i': ArgInstant := true;
       'q': ArgQuiet := true;
@@ -67,6 +71,7 @@ begin
   if optind<=paramcount then
     ArgTerm := ParamStr(optind);
   ArgInstant := ArgInstant or ArgSafe;
+  ArgNoman := (ArgNoman or ArgSafe) and (not (ArgHelp or (ArgTopic<>'')));
   ArgQuiet := ArgQuiet or ArgSafe or (ArgTerm<>'');
   if not ArgSafe then begin
     if (not DirectoryExists(GetAppConfigDir(false))) then
@@ -87,6 +92,23 @@ begin
         end;
         Writeln('Done!');
       end else ArgInstant := true;
+    end;
+    if (not FileExists(GetAppConfigDir(false)+PathDelim+'help')) then begin
+      if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'help') then
+      begin
+        Write('Creating local manual... ');
+        Assign(f1,GetAppConfigDir(true)+PathDelim+'help');
+        Assign(f2,GetAppConfigDir(false)+PathDelim+'help');
+        filemode := 0; Reset(f1); 
+        filemode := 1; Rewrite(f2);
+        filemode := 2;
+        try while not eof(f1) do begin
+          Read(f1,b); Write(f2,b);
+        end finally
+          Close(f1); Close(f2);
+        end;
+        Writeln('Done!');
+      end else ArgNoman := true;
     end;
   end;
 end.

@@ -476,7 +476,7 @@ Fu Bar, a term-parsing calculator.
 Copyright (c) 2011 Marvin Cohrs
 Distributed under the terms of the GNU General Public License.
 
-Usage: fubar [-i|--instant] [-q|--quiet] [[-t|--term] TERM]
+Usage: fubar [-i|--instant] [-q|--quiet] [--noman] [[-t|--term] TERM]
        fubar --safe [[-t|--term] TERM]
        fubar --about TOPIC
        fubar --help
@@ -484,11 +484,13 @@ Usage: fubar [-i|--instant] [-q|--quiet] [[-t|--term] TERM]
   -i --instant      Do not load my ~/.config/fubar/autoload
   -q --quiet        Be quiet.
   -t --term TERM    Calculate the given term.
+     --noman        Disable built-in manual.
      --safe         Safe mode, does not read or modify any file.
      --help         This help screen.
      --about TOPIC  Displays help about a specific topic.
      
---term implies -q
---safe implies -qi
+--term implies --quiet
+--safe implies --quiet, --instant, --noman
+--help, --about deny --safe, --noman
      
 :end

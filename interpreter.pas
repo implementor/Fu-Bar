@@ -109,13 +109,17 @@ begin
             end;
           except
             on E: ECodeMistake do
-            Writeln(StdErr,E.Message);
+              Writeln(StdErr,E.Message);
             on E: EDivByZero do
-            Writeln(StdErr,'Illegal zero division.');
+              Writeln(StdErr,'Illegal zero division.');
             on E: EZeroDivide do
-            Writeln(StdErr,'Illegal zero division.');
+              Writeln(StdErr,'Illegal zero division.');
             on E: EInvalidOp do
-            Writeln(StdErr,'Illegal operation.');
+              Writeln(StdErr,'Illegal operation.');
+            on E: EOverflow do
+              Writeln(StdErr,'Float overflow.');
+            on E: EUnderflow do
+              Writeln(StdErr,'Float underflow.');
           end;
           if not ArgQuiet then
             Writeln;

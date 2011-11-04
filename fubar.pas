@@ -26,7 +26,7 @@ begin
     else if ArgTopic<>'' then
       OutHelp('help:'+ArgTopic)
     else begin
-      if not ArgQuiet then
+      if not (ArgQuiet or ArgNoman) then
         OutHelp('startup');
       StartInterpreter;
     end;
