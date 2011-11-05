@@ -15,17 +15,21 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.}
 
-{$mode objfpc}{$coperators on}
+{$mode objfpc}{$coperators on}{$longstrings on}
 
 unit cmd;
 
 interface
 
-uses cradle, expressions, sysutils, math, buffer, explain, cmplx, arguments;
+uses cradle, expressions, sysutils, math, buffer, explain, cmplx, arguments, plug;
 
 procedure RunCommand;
+procedure RunPlugin(const int: boolean = false);
 procedure OutHelp(const section: string; const fn: string = '$def');
 procedure OutFullFile(const fn: string);
+
+type
+  EUnknownPlugin = class(Exception);
 
 implementation
 
@@ -124,8 +128,24 @@ begin
                 Writeln(ReadExplanation)
             until not ExplanationAvailable;
         end else if nm = 'nyan' then Nyan
+        else if nm = 'invoke' then
+          RunPlugin(true)
         else Outhelp(nm);
     end
+end;
+
+procedure RunPlugin(const int: boolean = false);
+var nm: string; p: iplugin;
+begin
+  if not int then
+    Match('/');
+  nm := GetName;
+  p := FindPlugin(nm);
+  if p<>nil then begin
+    SkipWhite;
+    p.Transmit(look+ReadRemaining);
+    p.Invoke;
+  end else raise EUnknownPlugin.Create('Unknown plugin '''+nm+'''');
 end;
 
 initialization

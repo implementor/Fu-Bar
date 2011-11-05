@@ -1,9 +1,11 @@
 # Makefile for Fu Bar
 
-ARGS=-Mobjfpc
-ARGSTRUNK=-Fu~/fpc/rtl -Mobjfpc
-ARGSWINE=-Mobjfpc
+ARGS=-Mobjfpc -fPIC
+ARGSTRUNK=-Fu~/fpc/rtl -Mobjfpc -fPIC
+ARGSWINE=-Mobjfpc -fPIC
 INST_DEST=/usr/local/bin
+INST_CFG_DEST=/etc/fubar
+LOC_CFG_DIR=~/.config/fubar
 MAN_DEST=/usr/share/man/man1
 
 # Programs used
@@ -47,13 +49,17 @@ help:
 
 # target: fubar
 .PHONY: build
-build: fubar
-fubar: fubar.pas interpreter.pas arguments.pas cmd.pas expressions.pas sqrt.pas buffer.pas explain.pas cradle.pas cmplx.pas vars.pas prayerlist.pas
+build: fubar libplugtest.so libtcal.so
+fubar: fubar.pas interpreter.pas arguments.pas cmd.pas expressions.pas sqrt.pas buffer.pas explain.pas cradle.pas cmplx.pas vars.pas prayerlist.pas plug.pas
 	@$(MAKE) clean >/dev/null
 	$(PP) $(ARGS) fubar.pas
+libplugtest.so: plugtest.pas
+	$(PP) $(ARGS) plugtest.pas
+libtcal.so: tcal.pas
+	$(PP) $(ARGS) tcal.pas
 	
 .PHONY: build4win
-fubar4win: fubar.exe
+build4win: fubar.exe
 fubar.exe: fubar.pas interpreter.pas arguments.pas cmd.pas expressions.pas sqrt.pas buffer.pas explain.pas cradle.pas cmplx.pas vars.pas prayerlist.pas
 	@$(MAKE) clean >/dev/null
 	$(PPWINE) $(ARGSWINE) fubar.pas
@@ -67,28 +73,36 @@ buildtrunk: fubar.pas interpreter.pas arguments.pas cmd.pas expressions.pas sqrt
 buildX: fubar fubar.exe
 
 .PHONY: install
-install: fubar autoload.dat help.dat
+install: fubar autoload.dat help.dat fubar.1 libplugs.dat libplugtest.so libtcal.so
+	# Uninstall, if required
 	@$(MAKE) uninstall >/dev/null
+	# Install Binary
 	$(INST) fubar $(INST_DEST)
-	$(MKDIR) /etc/fubar
-	$(CP) autoload.dat autoload
-	$(CP) help.dat help
-	$(INST) autoload help /etc/fubar
+	# Prepare Config Dir
+	$(MKDIR) $(INST_CFG_DEST)
+	# Install Plugins
+	$(INST) libplugtest.so $(INST_CFG_DEST)
+	$(INST) libtcal.so $(INST_CFG_DEST)
+	# Install Manual
 	$(INST) fubar.1 $(MAN_DEST)
+	# Install Misc
+	$(INST) autoload.dat $(INST_CFG_DEST)/autoload
+	$(INST) help.dat $(INST_CFG_DEST)/help
+	$(INST) libplugs.dat $(INST_CFG_DEST)/libplugs
 	
 .PHONY: uninstall
 uninstall:
-	$(RM) -rf /etc/fubar
+	$(RM) -rf $(INST_CFG_DEST)
 	$(RM) -f $(INST_DEST)/fubar
 	$(RM) -f $(MAN_DEST)/fubar.1
 
 .PHONY: clean
 clean:
-	$(RM) -f fubar *.o *.ppu fubar.exe
+	$(RM) -f fubar *.o *.ppu fubar.exe *.so
 
 .PHONY: erasecfg
 erasecfg:
-	$(RM) -rf ~/.config/fubar
+	$(RM) -rf $(LOC_CFG_DIR)
 
 .PHONY: run
 run: fubar

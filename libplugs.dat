@@ -1,0 +1,2 @@
+test: /etc/fubar/libplugtest.so
+tcal: /etc/fubar/libtcal.so

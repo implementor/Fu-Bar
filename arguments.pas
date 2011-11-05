@@ -26,7 +26,7 @@ uses getopts, sysutils;
 var
   ArgInstant, ArgHelp, ArgQuiet, ArgSafe, ArgNoman: Boolean;
   ArgTerm, ArgTopic: string;
-  PathAutoload, PathHelp: string;
+  PathAutoload, PathHelp, PathLibplugs: string;
 
 implementation
 
@@ -42,6 +42,20 @@ const
     );
 
 var c: char; idx: integer; f1, f2: file of byte; b: byte;
+
+procedure cp(const fn1, fn2: string);
+begin
+  Assign(f1,fn1);
+  Assign(f2,fn2);
+  filemode := 0; Reset(f1); 
+  filemode := 1; Rewrite(f2);
+  filemode := 2;
+  try while not eof(f1) do begin
+    Read(f1,b); Write(f2,b);
+  end finally
+    Close(f1); Close(f2);
+  end;
+end;
     
 begin
   c:=#0;
@@ -54,6 +68,7 @@ begin
   ArgTopic := '';
   PathAutoload := GetAppConfigDir(false)+PathDelim+'autoload';
   PathHelp := GetAppConfigDir(false)+PathDelim+'help';
+  PathLibplugs := GetAppConfigDir(false)+PathDelim+'libplugs';
   repeat
     c:=getlongopts('iqt:',@options[1],idx);
     case c of
@@ -80,16 +95,7 @@ begin
       if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'autoload') then
       begin
         Write('Creating local configuration... ');
-        Assign(f1,GetAppConfigDir(true)+PathDelim+'autoload');
-        Assign(f2,GetAppConfigDir(false)+PathDelim+'autoload');
-        filemode := 0; Reset(f1); 
-        filemode := 1; Rewrite(f2);
-        filemode := 2;
-        try while not eof(f1) do begin
-          Read(f1,b); Write(f2,b);
-        end finally
-          Close(f1); Close(f2);
-        end;
+        cp(GetAppConfigDir(true)+PathDelim+'autoload',GetAppConfigDir(false)+PathDelim+'autoload');
         Writeln('Done!');
       end else ArgInstant := true;
     end;
@@ -97,18 +103,17 @@ begin
       if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'help') then
       begin
         Write('Creating local manual... ');
-        Assign(f1,GetAppConfigDir(true)+PathDelim+'help');
-        Assign(f2,GetAppConfigDir(false)+PathDelim+'help');
-        filemode := 0; Reset(f1); 
-        filemode := 1; Rewrite(f2);
-        filemode := 2;
-        try while not eof(f1) do begin
-          Read(f1,b); Write(f2,b);
-        end finally
-          Close(f1); Close(f2);
-        end;
+        cp(GetAppConfigDir(true)+PathDelim+'help',GetAppConfigDir(false)+PathDelim+'help');
         Writeln('Done!');
       end else ArgNoman := true;
+    end;
+    if (not FileExists(GetAppConfigDir(false)+PathDelim+'libplugs')) then begin
+      if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'libplugs') then
+      begin
+        Write('Creating local libplugs index... ');
+        cp(GetAppConfigDir(true)+PathDelim+'libplugs',GetAppConfigDir(false)+PathDelim+'libplugs');
+        Writeln('Done!');
+      end else PathLibplugs := '';
     end;
   end;
 end.

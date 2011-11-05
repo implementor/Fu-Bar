@@ -34,7 +34,8 @@ function IsAlpha(x: char): Boolean;
 function IsDigit(x: char): Boolean;
 function IsAlnum(x: char): Boolean;
 function GetName: string;
-function GetNum: Extended;
+function GetNum(const nopoint: boolean = false): Extended;
+function GetInt: Int64;
 procedure Error(s: string);
 procedure Expected(exp: string; found: string = '');
 procedure Expected(exp: string; found: char);
@@ -88,16 +89,18 @@ end;
 
 function GetName: string;
 begin
+    SkipWhite;
     Result := '';
     if not IsAlpha(look) then Expected('Identifier',look);
     repeat
         Result += look;
         GetChar;
-    until not IsAlpha(look)
+    until not IsAlpha(look);
+    SkipWhite
 end;
 
-function GetNum: Extended;
-var c: boolean; ac: byte; base: byte;
+function GetNum(const nopoint: boolean = false): Extended;
+var c, neg: boolean; ac, base: byte;
     function Digit(const d: char): byte;
     begin
         if (d>='0') and (d<='9') then
@@ -108,10 +111,13 @@ var c: boolean; ac: byte; base: byte;
             Result := Ord(d)-Ord('A')+10
     end;
 begin
+    SkipWhite;
     Result := 0;
-    c := false;
+    c := nopoint;
     ac := 0;
     base := 10;
+    neg := look='-';
+    if look in ['+','-'] then GetChar;
     if look='$' then begin
         Match('$');
         base := 16;
@@ -121,14 +127,21 @@ begin
         if look in ['.',','] then c := true
         else begin
             Result := Result * base + Digit(look);
-            if c then Inc(ac)
+            if c and not nopoint then Inc(ac)
         end;
         GetChar;
     until not (IsDigit(look) or ((look in [',','.']) and (not c)) or ((base=16)and(look in ['a'..'f','A'..'F'])));
     while (ac > 0) do begin
         Result /= base;
         Dec(ac)
-    end
+    end;
+    if neg then Result := -Result;
+    SkipWhite
+end;
+
+function GetInt: Int64;
+begin
+    Result := MakeInt(GetNum(true))
 end;
 
 procedure Error(s: string);

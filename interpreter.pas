@@ -73,6 +73,8 @@ begin
           try
             if look = ':' then
               RunCommand
+            else if look = '/' then
+              RunPlugin
             else begin
               if look <> #10 then
                 x := Eval
@@ -120,6 +122,8 @@ begin
               Writeln(StdErr,'Float overflow.');
             on E: EUnderflow do
               Writeln(StdErr,'Float underflow.');
+            on E: EUnknownPlugin do
+              Writeln(StdErr,E.Message);
           end;
           if not ArgQuiet then
             Writeln;
