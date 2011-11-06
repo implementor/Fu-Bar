@@ -4,9 +4,9 @@
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{ellipsis}
+\usepackage[pdfborder={0 0 0}]{hyperref}
 \geometry{vmargin=2.5cm,hmargin=2cm}
 \author{Marvin Cohrs}
-%\institute{Kopernikus-Gymnasium, Rheine}
 \title{Fu Bar}
 
 \begin{document}
@@ -297,10 +297,28 @@
 	/apply
 	\end{verbatim}
 	
+	\section{Get}
+	
+	\subsection{Using Git}
+	
+	Simply clone the repository:
+	\begin{verbatim}
+	git clone git://github.com/implementor/Fu-Bar.git fubar
+	\end{verbatim}
+	Later, you can easily check for updates:
+	\begin{verbatim}
+	cd fubar
+	git pull origin master
+	\end{verbatim}
+	
+	\subsection{Packed and compressed}
+	
+	Get it here: \url{https://github.com/implementor/Fu-Bar/zipball/master}
+	
 	\section{Build \& Install}
 	
 	On Linux, you can easily build Fu Bar using GNU \texttt{make}.
-	Other Unixes may work also, but aren't tested.
+	Other Unixes may also work, but aren't tested.
 	The packages \texttt{make} and \texttt{fpc} are required.
 	
 	\begin{description}
