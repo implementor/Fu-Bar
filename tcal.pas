@@ -5,7 +5,7 @@
 
 library tcal;
 
-uses tcaltasks, tcaltaskimpl, cradle, sysutils, cmd, buffer;
+uses tcaltasks, tcaltaskimpl, cradle, sysutils, buffer;
 
 var
   sched: TScheduler = nil;
@@ -26,12 +26,12 @@ begin
   end;
 end;
 
-procedure transmit(const s: pchar);
+procedure transmit(const s: pchar);cdecl;
 begin
   line += string(s);
 end;
 
-procedure invoke;
+procedure invoke;cdecl;
 begin
   if sched=nil then sched := TScheduler.Create;
   UpdateBuffer(line);
@@ -42,8 +42,6 @@ begin
     nm := GetName;
     if nm='listmonth' then begin
       nm := GetName; y := GetInt;
-      Writeln(month(nm));
-      Writeln(y);
       sched.Schedule(TListmonthTask.Create(y,month(nm)));
     end else if nm='dayofweek' then begin
       y := GetInt; Match('-');

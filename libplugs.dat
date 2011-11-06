@@ -1,2 +1,7 @@
 test: /etc/fubar/libplugtest.so
 tcal: /etc/fubar/libtcal.so
+queue = tcal queue
+apply = tcal apply
+dayofweek = queue dayofweek
+listmonth = queue listmonth
+echo = queue echo

@@ -135,17 +135,27 @@ begin
 end;
 
 procedure RunPlugin(const int: boolean = false);
-var nm: string; p: iplugin;
+var nm,al,pl: string; p: iplugin;
 begin
   if not int then
     Match('/');
   nm := GetName;
+  SkipWhite;
+  pl := look+ReadRemaining;
   p := FindPlugin(nm);
   if p<>nil then begin
-    SkipWhite;
-    p.Transmit(look+ReadRemaining);
+    p.Transmit(pl);
     p.Invoke;
-  end else raise EUnknownPlugin.Create('Unknown plugin '''+nm+'''');
+  end else begin
+    al := FindAlias(nm);
+    if al='' then
+      raise EUnknownPlugin.Create('Unknown plugin '''+nm+'''');
+    PushBuffer;
+    UpdateBuffer(al+' '+pl);
+    GetChar;
+    RunPlugin(true);
+    PopBuffer;
+  end;
 end;
 
 initialization

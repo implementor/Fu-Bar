@@ -57,14 +57,21 @@ type
   end;
 
 function FindPlugin(const cmd: string): IPlugin;
+function FindAlias(const al: string): string;
 
 implementation
 
 type
   TPluginList = specialize TPrayerList<IPlugin>;
+  TStringKVPair = record
+    Key, Value: string;
+  end;
+  PStringKVPair = ^TStringKVPair;
+  TStringDictionary = specialize TPrayerList<PStringKVPair>;
   
 var
   FPluginList: TPluginList;
+  FAliasDict: TStringDictionary;
 
 constructor TLibPlugin.Create(const cmd,fn: string);
 begin
@@ -109,9 +116,19 @@ begin
       Result := FPluginList[j];
 end;
 
-var i: smallint; f: system.text; t1,t2: string;
+function FindAlias(const al: string): string;
+var j: smallint;
+begin
+  Result := '';
+  for j := 0 to FAliasDict.Count-1 do
+    if FAliasDict[j]^.Key = al then
+      Result := FAliasDict[j]^.Value;
+end;
+
+var i: smallint; f: system.text; t1,t2: string; p: PStringKVPair;
 initialization
   FPluginList := TPluginList.Create(0,nil);
+  FAliasDict := TStringDictionary.Create(0,nil);
   if PathLibplugs <> '' then begin
     Assign(f,PathLibplugs);
     Reset(f);
@@ -123,11 +140,22 @@ initialization
         GetChar;
         t1 := GetName;
         SkipWhite;
-        Match(':');
-        SkipWhite;
-        t2 := look+ReadRemaining;
-        PopBuffer;
-        FPluginList.Add(TLibPlugin.Create(t1,t2));
+        if look = '=' then begin
+          Match('=');
+          SkipWhite;
+          t2 := look+ReadRemaining;
+          PopBuffer;
+          New(p);
+          p^.Key := t1;
+          p^.Value := t2;
+          FAliasDict.Add(p);
+        end else begin
+          Match(':');
+          SkipWhite;
+          t2 := look+ReadRemaining;
+          PopBuffer;
+          FPluginList.Add(TLibPlugin.Create(t1,t2));
+        end
       end;
     finally
       Close(f);
@@ -136,5 +164,8 @@ initialization
 finalization
   for i := 0 to FPluginList.Count-1 do
     FPluginList[i] := nil;
+  for i := 0 to FAliasDict.Count-1 do
+    Dispose(FAliasDict[i]);
   FPluginList.Free;
+  FAliasDict.Free;
 end.

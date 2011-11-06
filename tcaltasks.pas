@@ -77,10 +77,6 @@ type
     procedure Schedule(const task: ITask);
     procedure Apply;
   end;
-
-implementation
-
-type
   TTaskContext = class (TInterfacedObject, ITaskContext)
   private
     FSched: TScheduler;
@@ -96,6 +92,8 @@ type
     function QueryFloatAtom(const atom: Int64): extended;
     function QueryResult(const resv: string): Int64;
   end;
+
+implementation
 
 ////////////////////////////////////////////////////////////
 //  TScheduler  ////////////////////////////////////////////
@@ -142,36 +140,28 @@ begin
 end;
 
 procedure TScheduler.Apply;
-var i: smallint; cpy: TDictTask; ctx: TTaskContext; d: string;
+var i: smallint; cpy: TDictTask; ctx: ITaskContext; d: string;
 begin
   try
-      Writeln('#> A');
       cpy := TDictTask.Create(0,nil);
       ctx := TTaskContext.Create(self);
       repeat
-        Writeln('#> B');
         cpy.Clear;
-        Writeln('#> B.1');
         for i := 0 to FTasks.Count-1 do
           cpy.Add(FTasks[i]);
-        Writeln('#> B.2');
         FTaskIdx := 0;
         for i := 0 to cpy.Count-1 do
         begin
-          Writeln('#> B.3');
           FCurrentTask := cpy[i]^;
           if not FCurrentTask.depch then
             FCurrentTask.Task.CheckDependencies(ctx);
-          Writeln('#> B.4');
           cpy[i]^.depch := true;
           Inc(FTaskIdx);
         end;
       until cpy.Count = FTasks.Count;
-      Writeln('#> C');
       cpy.Clear; cpy.Shrink;
       for i := 0 to FTasks.Count-1 do
       begin
-        Writeln('#> D');
         FCurrentTask := FTasks[i]^;
         d := fCurrentTask.Task.GetDesc;
         if (d<>'') and (fCurrentTask.Reason=rrUser) then
@@ -180,12 +170,11 @@ begin
         Dispose(FTasks[i]);
       end;
   finally
-      Writeln('#> E');
       FTasks.Clear; FTasks.Shrink;
       for i := 0 to FEmit.Count-1 do
         Writeln(i:3,' ',FEmit[i]);
       FEmit.Clear; FEmit.Shrink;
-      FreeAndNil(ctx);
+      ctx := nil;
       FreeAndNil(cpy);
   end
 end;

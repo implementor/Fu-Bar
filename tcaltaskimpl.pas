@@ -61,24 +61,21 @@ constructor TEchoTask.Create(const text: string);
 begin
   inherited Create;
   FText := text;
-  Writeln('--> Create');
 end;
 
 procedure TEchoTask.CheckDependencies(const tc: ITaskContext);
 begin
   // No dependencies
-  Writeln('--> CheckDependencies');
 end;
 
 procedure TEchoTask.RunTask(const tc: ITaskContext);
 begin
-  tc.Emit(ftext)
+  tc.Emit(ftext);
 end;
 
 function TEchoTask.GetDesc: string;
 begin
   Result := '';
-  Writeln('--> GetDesc');
 end;
 
 ///////////////////////////////////////////////////////////
@@ -92,7 +89,7 @@ end;
 
 procedure TListMonthTask.CheckDependencies(const tc: ITaskContext);
 begin
-  //tc.QueueDependency(TDayOfWeekTask.Create(FYear,1,FMonth),'_lm_dow1');
+  tc.QueueDependency(TDayOfWeekTask.Create(FYear,1,FMonth),'_lm_dow1');
 end;
 
 procedure TListMonthTask.RunTask(const tc: ITaskContext);

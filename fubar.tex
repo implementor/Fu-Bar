@@ -193,7 +193,19 @@
     $[\,f(0)\,]\;0$ & $\Rightarrow 0$\\
     $f(4)$ & $\Rightarrow 0.25$\\
     $f(0)$ & $\Rightarrow 0$
-	\end{tabular}
+	\end{tabular}\\\\
+	To ensure, that the argument is under a specific set of numbers,
+	there are the following directives:\\
+	\begin{description}
+	  \item[complex] The full complex set.
+	  \item[real] As a computer cannot calculate with irrational numbers,
+	              $real$ equals $rational$.
+	  \item[rational] The imaginary part is dropped, a rational number remains.
+	  \item[integer] The fraction is truncated, an integer remains.
+	  \item[natural] The sign is dropped, a natural number remains.
+	\end{description}
+	Each of these directives may be combined with $nonzero$.\\
+	If no set is specified, Fu Bar uses $complex$.
 	
 	\subsection{Explanations}
 	
@@ -202,5 +214,142 @@
 	$1\,+\,5\,=\,6$\\
 	$32\,*\,6\,=\,192$\\\\
 	Come on, try it!
+	
+	\section{Plugins}
+	
+	Fu Bar provides a plugin interface. Plugins are invoked by one of these
+	syntaxes:
+	\begin{verbatim}
+	:invoke plugin-name param-list
+	/plugin-name param-list
+	\end{verbatim}
+	
+	\subsection{Writing own plugins}
+	
+	Fu Bar wants its plugins to have the following exported procedures:
+	\begin{description}
+	  \item[void \_\_cdecl fubar\_plugin\_transmit(char *params)]
+	    Receives the arguments. Do not implement the main skills here!
+	    Always remember, that this procedure may be called multiple times
+	    before invocation.
+	  \item[void \_\_cdecl fubar\_plugin\_invoke()]
+	    Implement all the plugin's functionality here.
+	\end{description}
+	
+	A short example in Pascal:
+	\begin{verbatim}
+	library example;
+	
+	var params: string;
+	
+	procedure transmit(const s: PChar); cdecl;
+	begin
+	  params := params + ' ' + string(s);
+	end;
+	
+	procedure invoke; cdecl;
+	begin
+	  Writeln('Hello World!');
+	  Writeln(params);
+	end;
+	
+	exports
+	  transmit name 'fubar_plugin_transmit',
+	  invoke name 'fubar_plugin_invoke';
+	  
+	initialization
+	  params := '';
+	end.
+	\end{verbatim}
+	
+	Compile it, and you'll receive a file named \textit{libexample.so} (Unix) 
+	or \textit{example.dll} (Windows).\\
+	Now add your plugin to \textit{libplugs.dat}:
+	\begin{verbatim}
+	example: /etc/fubar/libexample.so
+	\end{verbatim}
+	If possible, the plugin should be in the global configuration path of Fu 
+	Bar. On Linux, it's /etc/fubar/ in the most cases. Now don't forget to
+	reinstall Fu Bar with the new \textit{libplugs.dat} (\texttt{sudo make 
+	install}) and erase your local copy (usually in $\sim$/.config/fubar/)
+	using \texttt{make erasecfg}.
+	
+	\subsection{tcal - the integrated task-based calendar}
+	
+	tcal is a task-based calendar, shipped as a plugin for fubar.
+	To queue a task, use
+	\begin{verbatim}
+	/tcal queue task param-list
+	/queue task param-list
+	/task param-list
+	\end{verbatim}
+	
+	For example, the \textit{dayofweek} task can be queued by
+	\begin{verbatim}
+	/tcal queue dayofweek 2011-11-11
+	/queue dayofweek 2011-11-11
+	/dayofweek 2011-11-11
+	\end{verbatim}
+	
+	To run all queued tasks, enter
+	\begin{verbatim}
+	/tcal apply
+	/apply
+	\end{verbatim}
+	
+	\section{Build \& Install}
+	
+	On Linux, you can easily build Fu Bar using GNU \texttt{make}.
+	Other Unixes may work also, but aren't tested.
+	The packages \texttt{make} and \texttt{fpc} are required.
+	
+	\begin{description}
+	  \item[make build] Build Fu Bar.
+	  \item[make clean] Clean up the directory.
+	  \item[make erasecfg] Erase your local configuration.
+	  \item[sudo make install] Installs Fu Bar to \$(INST\_DEST)
+	  \item[sudo make uninstall] Uninstall Fu bar from \$(INST\_DEST)
+	  \item[make run] Run Fu Bar from the scratch.
+	\end{description}
+	
+	If \texttt{wine} is available, and you have installed \texttt{FPC for
+	Win32} using it, the following targets are also usable:
+	
+	\begin{description}
+	  \item[make build4win] Build Fu Bar for Win32
+	  \item[make buildX] Build Fu Bar for Win32 AND your current platform.
+	  \item[make run4win] Run the Win32 executable
+	\end{description}
+	
+	\section{Run}
+	
+	After installation, you should be able to call \texttt{fubar} from
+	the command-line.\\
+	\texttt{fubar --help} reveals this:
+	
+	\begin{verbatim}
+	Fu Bar, a term-parsing calculator.
+	Copyright (c) 2011 Marvin Cohrs
+	Distributed under the terms of the GNU General Public License.
+
+	Usage: fubar [-i|--instant] [-q|--quiet] [--noman] [[-t|--term] TERM]
+       fubar --safe [[-t|--term] TERM]
+       fubar --about TOPIC
+       fubar --help
+
+	  -i --instant      Do not load my ~/.config/fubar/autoload
+	  -q --quiet        Be quiet.
+	  -t --term TERM    Calculate the given term.
+	     --noman        Disable built-in manual.
+	     --safe         Safe mode, does not read or modify any file.
+	     --help         This help screen.
+	     --about TOPIC  Displays help about a specific topic.
+     
+	--term implies --quiet
+	--safe implies --quiet, --instant, --noman
+	--help, --about deny --safe, --noman
+	\end{verbatim}
+	
+	Fu Bar also provides a manpage. Try \texttt{man fubar} ;)
 
 \end{document}
