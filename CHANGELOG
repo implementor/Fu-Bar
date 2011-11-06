@@ -1,6 +1,12 @@
 Fu Bar -- Changelog
 ======================================
 
+Fu Bar 1.4
+------------
+Fu Bar now allows to create plugins.
+tcal is shipped as a first one.
+In addition, Fu Bar got a manpage.
+
 Fu Bar 1.3
 ------------
 Fu Bar now allows command-line arguments.
