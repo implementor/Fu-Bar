@@ -21,7 +21,7 @@ unit cmd;
 
 interface
 
-uses cradle, expressions, sysutils, math, buffer, explain, cmplx, arguments, plug;
+uses cradle, expressions, sysutils, math, buffer, explain, cmplx, arguments, plug, nout;
 
 procedure RunCommand;
 procedure RunPlugin(const int: boolean = false);
@@ -48,8 +48,8 @@ begin
         begin
             Readln(f,l);
             if s then begin
-                if l = ':stop' then begin
-                    Write('<Press Enter to continue>');
+                if (l = ':stop') and (OutMethod=omStd) then begin
+                    noutstart('<Press Enter to continue>');
                     Readln
                 end else if l = ':end' then
                     s := false
@@ -60,11 +60,11 @@ begin
                     Readln(f,l);
                     OutFullFile(l);
                 end else if (length(l)=0) or (l[1]<>':') then
-                    Writeln(l)
+                    nouttext(l)
             end else if l = ':begin:'+section then begin
                 Inc(i);
                 s := true;
-                if i > 1 then Writeln
+                if i > 1 then nouttext('')
             end else if l = ':extlink:'+section then begin
                 Readln(f,l);
                 OutFullFile(l);
@@ -90,7 +90,7 @@ begin
                 Write('<Press Enter to continue>');
                 Readln
             end;
-            Writeln(i:3, ' ', l)
+            nouttext([i, ' ', l])
         end;
     finally
         Close(f)
@@ -104,8 +104,8 @@ procedure Nyan;
 begin
     nyanmode := not nyanmode;
     if nyanmode then
-        Writeln('Nyan Mode is now ON')
-    else Writeln('Nyan Mode is now OFF')
+        nouttext('Nyan Mode is now ON')
+    else nouttext('Nyan Mode is now OFF')
 end;
 
 begin
@@ -125,7 +125,7 @@ begin
         end else if nm = 'explain' then begin
             Expression;
             repeat
-                Writeln(ReadExplanation)
+                nouttext(ReadExplanation)
             until not ExplanationAvailable;
         end else if nm = 'nyan' then Nyan
         else if nm = 'invoke' then

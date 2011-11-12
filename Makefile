@@ -5,6 +5,7 @@ ARGSTRUNK=-Fu~/fpc/rtl -Mobjfpc -fPIC
 ARGSWINE=-Mobjfpc -fPIC
 INST_DEST=/usr/local/bin
 INST_CFG_DEST=/etc/fubar
+INST_CFG_RAGEPUB=/etc/ragepub
 LOC_CFG_DIR=~/.config/fubar
 MAN_DEST=/usr/share/man/man1
 

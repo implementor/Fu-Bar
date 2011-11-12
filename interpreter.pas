@@ -21,9 +21,10 @@ unit interpreter;
 
 interface
 
-uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain, cmplx, arguments;
+uses cradle, expressions, sysutils, math, vars, cmd, sqrt, buffer, explain, cmplx, arguments, nout;
 
 procedure StartInterpreter;
+procedure Autoload(const fn: string);
 
 var
     successful: boolean;
@@ -63,7 +64,7 @@ begin
           AutoLoad(PathAutoload);
         repeat
           if not ArgQuiet then
-            Write('Enter a term: ');
+            noutstart('Enter a term: ');
           if ArgTerm = '' then
             Readln(l)
           else l := ArgTerm;
@@ -81,64 +82,64 @@ begin
               else begin x := 0; q := true end;
               if look <> '=' then begin
                 if look<>#10 then Expected('Linebreak',look);
-                if not ArgQuiet then Write('Result: ');
+                if not ArgQuiet then noutstart('Result: ');
                 if l<>'' then
-                  Writeln(Nyanize(x))
+                  nouttext(Nyanize(x))
               end else begin
                 Match('=');
                 y := Eval;
                 if look<>#10 then Expected('Linebreak',look);
                 if SameValue(x,y) then begin
-                  Writeln('True! L = R');
-                  Writeln('Result: ',Nyanize(x))
+                  nouttext('True! L = R');
+                  nouttext(['Result: ',Nyanize(x)])
                 end else if x < y then begin
-                  Writeln('False! L < R');
-                  Writeln('Result for L: ',Nyanize(x));
-                  Writeln('Result for R: ',Nyanize(y));
-                  Writeln('Result for R-L: ',Nyanize(y-x));
+                  nouttext('False! L < R');
+                  nouttext(['Result for L: ',Nyanize(x)]);
+                  nouttext(['Result for R: ',Nyanize(y)]);
+                  nouttext(['Result for R-L: ',Nyanize(y-x)]);
                   if x<>0 then
-                    Writeln('Result for R/L: ',Nyanize(y/x))
+                    nouttext(['Result for R/L: ',Nyanize(y/x)])
                 end else if x > y then begin
-                  Writeln('False! L > R');
-                  Writeln('Result for L: ',Nyanize(x));
-                  Writeln('Result for R: ',Nyanize(y));
-                  Writeln('Result for L-R: ',Nyanize(x-y));
+                  nouttext('False! L > R');
+                  nouttext(['Result for L: ',Nyanize(x)]);
+                  nouttext(['Result for R: ',Nyanize(y)]);
+                  nouttext(['Result for L-R: ',Nyanize(x-y)]);
                   if y<>0 then
-                    Writeln('Result for L/R: ',Nyanize(x/y))
+                    nouttext(['Result for L/R: ',Nyanize(x/y)])
                 end
               end;
               Answer := x
             end;
           except
             on E: ECodeMistake do
-              Writeln(StdErr,E.Message);
+              nouttext(odErr,E.Message);
             on E: EDivByZero do
-              Writeln(StdErr,'Illegal zero division.');
+              nouttext(odErr,'Illegal zero division.');
             on E: EZeroDivide do
-              Writeln(StdErr,'Illegal zero division.');
+              nouttext(odErr,'Illegal zero division.');
             on E: EInvalidOp do
-              Writeln(StdErr,'Illegal operation.');
+              nouttext(odErr,'Illegal operation.');
             on E: EOverflow do
-              Writeln(StdErr,'Float overflow.');
+              nouttext(odErr,'Float overflow.');
             on E: EUnderflow do
-              Writeln(StdErr,'Float underflow.');
+              nouttext(odErr,'Float underflow.');
             on E: EUnknownPlugin do
-              Writeln(StdErr,E.Message);
+              nouttext(odErr,E.Message);
           end;
           if not ArgQuiet then
-            Writeln;
+            nouttext('');
           ClearExplanations;
         until q or (ArgTerm<>'');
         successful := true;
     except
         on E: ECodeMistake do
-            Writeln(StdErr,E.Message);
+            nouttext(StdErr,E.Message);
         on E: EAccessViolation do
-            Writeln(StdErr,'I got an access violation. I''m really sorry about that bug.');
+            nouttext(StdErr,'I got an access violation. I''m really sorry about that bug.');
         on E: EStackOverflow do
-            Writeln(StdErr,'I got a stack overflow. I''m really sorry about that bug.');
+            nouttext(StdErr,'I got a stack overflow. I''m really sorry about that bug.');
         on E: Exception do
-            Writeln(StdErr,E.Classname,' => ',E.Message);
+            nouttext(StdErr,E.Classname+' => '+E.Message);
     end;
     FreeVars
 end;

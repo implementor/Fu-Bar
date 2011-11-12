@@ -31,4 +31,7 @@ begin
       StartInterpreter;
     end;
     ExitCode := 0;
+    Close(Output);
+    Close(Input);
+    Close(StdErr);
 end.

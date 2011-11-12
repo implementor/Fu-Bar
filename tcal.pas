@@ -51,7 +51,6 @@ begin
     end else if nm='echo' then begin
       nm := look+ReadRemaining;
       sched.Schedule(TEchoTask.Create(nm));
-      Writeln('Echo: ',nm);
     end
   end else if nm='apply' then
     try

@@ -39,7 +39,6 @@ function GetInt: Int64;
 procedure Error(s: string);
 procedure Expected(exp: string; found: string = '');
 procedure Expected(exp: string; found: char);
-procedure Emit(s: string);
 procedure SkipWhite;
 function MakeInt(a:Extended): Int64; inline;
 function NumToStr(a:Extended): string; inline;
@@ -159,11 +158,6 @@ end;
 procedure Expected(exp: string; found: char);
 begin
     Expected(exp, ''''+found+'''')
-end;
-
-procedure Emit(s: string);
-begin
-    Writeln(s)
 end;
 
 function MakeInt(a: Extended): Int64;

@@ -21,7 +21,7 @@ unit arguments;
 
 interface
 
-uses getopts, sysutils;
+uses getopts, sysutils, nout;
 
 var
   ArgInstant, ArgHelp, ArgQuiet, ArgSafe, ArgNoman: Boolean;
@@ -94,25 +94,25 @@ begin
     if (not FileExists(GetAppConfigDir(false)+PathDelim+'autoload')) then begin
       if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'autoload') then
       begin
-        Write('Creating local configuration... ');
+        noutstart('Creating local configuration... ');
         cp(GetAppConfigDir(true)+PathDelim+'autoload',GetAppConfigDir(false)+PathDelim+'autoload');
-        Writeln('Done!');
+        nouttext('Done!');
       end else ArgInstant := true;
     end;
     if (not FileExists(GetAppConfigDir(false)+PathDelim+'help')) then begin
       if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'help') then
       begin
-        Write('Creating local manual... ');
+        noutstart('Creating local manual... ');
         cp(GetAppConfigDir(true)+PathDelim+'help',GetAppConfigDir(false)+PathDelim+'help');
-        Writeln('Done!');
+        nouttext('Done!');
       end else ArgNoman := true;
     end;
     if (not FileExists(GetAppConfigDir(false)+PathDelim+'libplugs')) then begin
       if DirectoryExists(GetAppCOnfigDir(true)) and FileExists(GetAppConfigDir(true)+PathDelim+'libplugs') then
       begin
-        Write('Creating local libplugs index... ');
+        noutstart('Creating local libplugs index... ');
         cp(GetAppConfigDir(true)+PathDelim+'libplugs',GetAppConfigDir(false)+PathDelim+'libplugs');
-        Writeln('Done!');
+        nouttext('Done!');
       end else PathLibplugs := '';
     end;
   end;
