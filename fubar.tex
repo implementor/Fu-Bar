@@ -1,0 +1,373 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{a4wide}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{ellipsis}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\geometry{vmargin=2.5cm,hmargin=2cm}
+\author{Marvin Cohrs}
+\title{Fu Bar}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	
+	\section{Skills}
+	\subsection{Operators + Functions}
+	
+	Fu Bar knows several operators and functions:
+	
+	\begin{itemize}
+		\item Addition: $x + y$\\
+			  Adds two floating-point numbers.\\
+			  e.g. $4.1 + 5.8 = 9.9$
+		\item Subtraction: $x - y$\\
+			  Subtracts a floating-point number from another one.\\
+			  e.g. $9.9 - 5.8 = 4.1$
+		\item Multiplication: $x * y$\\
+			  Multiplies two floating-point numbers.\\
+			  e.g. $1.1 * 9.0 = 1.1 \times 9.0 = 9.9$
+		\item Division: $x / y$\\
+			  Divides a floating-point number by another one.\\
+			  e.g. $9.9 / 1.1 = \frac{9.9}{1.1} = 9.0$
+		\item Integer division: $n \backslash m$\\
+			  Divides an integer by another one and returns the integer quotient.\\
+			  e.g. $20 \backslash 6 = 3$\\
+			  because $6\times3=18$ and $6\times4=21$
+		\item Modulo: $n \# m$\\
+			  Divides an integer by another one and returns the modulo.\\
+			  e.g. $20 \# 6 = 2$\\
+			  because $6\times3+2=20$
+		\item Exponentiation: $x \; \hat{ } \; n$\\
+			  Exponentiates a floating-point base by an integer exponent.\\
+			  e.g. $2 \; \hat{ } \; 8 = 2 ^{8} = 256$
+		\item Paranthenses: $(expression)$\\
+			  An expression in paranthenses has got a higher priority.\\
+			  e.g. $2 * (4 + 5) = 2 * 9 = 18$\\
+			  but $2 * 4 + 5 = 8 + 5 = 13$
+		\item Absolute Value: $|expression|$, $abs(expression)$\\
+			  Gets the absolute value of an expression.\\
+			  e.g. $|+3| = 3$\\
+			  and $|-3| = 3$, too!
+		\item Negation: $-x$, $neg(x)$\\
+		      Negates a floating-point number.\\
+		      e.g. $- (3 * 2) = -6$
+		\item Reciprocal: $1/x$, $rec(x)$\\
+			  Divides $\frac{1}{x}$, resulting the reciprocal.\\
+			  e.g. $rec(4) = \frac{1}{4} = 0.25$
+		\item Factorial: $n!$, $fac(n)$\\
+			  Computes the factorial of an integer.\\
+			  e.g. $4! = 24$
+		\item Binomial Coefficient: $k$ from $n$, $n$C$k$\\
+			  Computes the binomial coefficient for $n \choose k$\\
+			  e.g. $2$ from $3 = 3$C$2 = {3 \choose 2} = 3$
+		\item Square root: $sqrt(x)$, $SquareRoot(x)$\\
+			  Computes the square root of a floating-point number.\\
+			  e.g. $sqrt(9) = \sqrt{9} = 3$
+		\item Cube root: $cbrt(x)$, $CubeRoot(x)$\\
+			  Computes the cube root of a floating-point number.\\
+			  e.g. $cbrt(27) = \sqrt[3]{27} = 3$
+		\item $n$th root: $nrt(x; n)$, $Root(x; n)$\\
+			  Computes the $n$th root of a floating-point number.\\
+			  e.g. $nrt(4096; 6) = \sqrt[6]{4096} = 4$
+		\item Integer reduction: $int(x)$, $x\backslash1$\\
+			  Reduces a floating-point number to an integer:\\
+			  e.g. $int(tau) = 6$
+		\item Cut: $frac(x)$\\
+			  Cut's the number at the floating-point, resulting fraction part.\\
+			  e.g. $frac(23.45) = 0.45$
+		\item Binary conjunction: $n$ and $m$\\
+			  Conjuncts two integers.\\
+			  e.g. $7$ and $11 = 3$
+		\item Binary disjunction: $n$ or $m$\\
+			  Disjuncts two integers.\\
+			  e.g. $7$ or $11 = 15$
+		\item Binary contravalence: $n$ xor $m$\\
+			  Contravalences two integers.\\
+			  e.g. $7$ or $11 = 12$
+		\item Greatest common divisor: $gcd(n; m)$\\
+			  Computes the greatest common divisor of two integers.\\
+			  e.g. $gcd(21; 28) = 7$
+		\item Least common multiple: $lcm(n; m)$\\
+			  Computes the least common multiple of two integers.\\
+			  e.g. $lcm(3; 4) = 12$
+		\item Sinus / Cosinus: $sin(x)$, $cos(x)$\\
+			  Computes the sinus / cosinus of an angle.\\
+			  Don't forget to specify the input unit (otherwise I'll use radians).\\
+			  The output unit is always radian.\\
+			  e.g. $sin(90 \deg) = \sin \frac{1}{4} \tau = 1$
+		\item Conversions:
+			  \begin{itemize}
+			  	\item $rad(x\;$deg$)$: Degree $\Rightarrow$ Radians
+			  	\item $rad(x\;$grad$)$: Gradian $\Rightarrow$ Radians
+			  	\item $rad(x\;$turn$)$: $\tau$-Radians $\Rightarrow$ Radians
+			  	\item $deg(x\;[$rad$])$: Radians $\Rightarrow$ Degree
+			  	\item $deg(x\;$grad$)$: Gradian $\Rightarrow$ Degree
+			  	\item $deg(x\;$turn$)$: $\tau$-Radians $\Rightarrow$ Degree
+			  	\item $grad(x\;[$rad$])$: Radians $\Rightarrow$ Gradian
+			  	\item $grad(x\;$deg$)$: Degree $\Rightarrow$ Gradian
+			  	\item $grad(x\;$turn$)$: $\tau$-Radians $\Rightarrow$ Gradian
+			  \end{itemize}
+		\item Iterations: $iterate(firstx: expression)$\\
+			  Runs the given iteration, resulting the fix point.\\
+			  e.g. $iterate(4: (xn+(9/xn))/2) = iterate(4: \frac{x_n+{\frac{9}{x_n}}}{2}) = \sqrt{9} = 3$\\
+			  expresses $x_{n+1} = \frac{x_n+{\frac{9}{x_n}}}{2}$
+		\item Short sum: $sum(var: start < end \;[$\$$\; step]; expression)$\\
+		      Sums the expression several times, iterating $var$ from $start$ to $end$.\\
+		      e.g. $sum(i: 1 < 4; i) = \displaystyle\sum_{i=1}^{4} i = 1+2+3+4 = 10$
+		\item Short product: $product(var: start < end \;[$\$$\; step]; expression)$\\
+			  Multiplies the expression several times, iterating $var$ from $start$ to $end$.\\
+			  e.g. $product(i: 1 < 5; i) = \displaystyle\prod_{i=1}^{5} i = 5! = 1\times2\times3\times4\times5 = 120$
+		\item Zero: $zero(var: expr)$\\
+			  Finds the zero of a function.\\
+			  e.g. $zero(a: 5*a-55) = 11$\\
+			  because $5\times11-55=0$
+		\item Solve: $solve(var: expr1 = expr2)$\\
+			  Solves the equation.\\
+			  e.g. $solve(a: a\;\hat{}\;2=49) = 7$\\
+			  because $7^2=49$
+	\end{itemize}
+	
+	\subsection{Constants}
+	
+	Fu Bar knows these constants:
+	
+	\begin{itemize}
+		\item tau: $\tau$, a full radian turn, about 6.28
+		\item pi: $\pi$, $\frac{\tau}{2}$, a half radian turn, about 3.14
+		\item phi: $\Phi$, the golden ratio, about 1.62
+		\item full: A whole, 1
+		\item half: $\frac{1}{2} = 0.5$
+		\item quarter: $\frac{1}{4} = 0.25$
+	\end{itemize}
+	
+	\subsection{Units}
+	
+	\begin{itemize}
+		\item deg: Degrees, full turn = 360
+		\item grad: Gradians, full turn = 400
+		\item rad: Radians, full turn = $\tau$
+		\item turn, tau: $\tau$-Radians, full turn = 1
+		\item pi: $\pi$-Radians, full turn = 2
+	\end{itemize}
+	
+	\subsection{Comparison}
+	
+	You can simply compare two expressions using an equation operator:\\
+	$expression_1 = expression_2$\\
+	\\
+	Fu Bar will tell you the result, and whether the terms are equal or not.\\
+	If not, it will tell you, which term is the greater one, and output the difference and the factor.
+	
+	\subsection{Custom variables}
+	
+	You can simply save results into your own variables:\\
+	$[\,name\,]\;expression$\\
+	\\
+	Fu Bar will compute the term and save the result to a variable of your choice.\\
+	To mark it as a constant, insert an exclamation mark before the name:\\
+	$[\,!name\,]\;expression$\\\\
+	Note: Fu Bar won't overwrite constants!
+	
+	\subsection{Custom functions}
+	
+	Of course, you can define custom functions, too:\\
+	$[\,name(\,var\,)\,]\;expression$\\\\
+	To mark it as read-only, insert an exclamation mark before the name:\\
+	$[\,!name(\,var\,)\,]\;expression$\\\\
+	To ensure, that the argument is not zero, add 'nonzero' before the var name:\\
+	$[\,name(\,$nonzero$\,var\,)\,]\;expression$\\\\
+	To assign a separate value to $name(0)$, enter:\\
+	$[\,name(0)\,]\;expression$\\\\
+	For example:\\
+	\begin{tabular}{ll}
+	$[\,f(x)\,]\;25x$ & $\Rightarrow 0$\\
+    $f(4)$& $\Rightarrow 100$\\
+    \\
+    $[\,f($nonzero$\,x)\,]\;1/x$ & $\Rightarrow 1$\\
+    $f(4)$ & $\Rightarrow 0.25$\\
+    $f(0)$ & $\Rightarrow$ Function not defined for $x=0$\\
+    \\
+    $[\,f(0)\,]\;0$ & $\Rightarrow 0$\\
+    $f(4)$ & $\Rightarrow 0.25$\\
+    $f(0)$ & $\Rightarrow 0$
+	\end{tabular}\\\\
+	To ensure, that the argument is under a specific set of numbers,
+	there are the following directives:\\
+	\begin{description}
+	  \item[complex] The full complex set.
+	  \item[real] As a computer cannot calculate with irrational numbers,
+	              $real$ equals $rational$.
+	  \item[rational] The imaginary part is dropped, a rational number remains.
+	  \item[integer] The fraction is truncated, an integer remains.
+	  \item[natural] The sign is dropped, a natural number remains.
+	\end{description}
+	Each of these directives may be combined with $nonzero$.\\
+	If no set is specified, Fu Bar uses $complex$.
+	
+	\subsection{Explanations}
+	
+	Fu Bar can tell you the steps, how to calculate a term.\\
+	$:explain\;32*(1+5)$ will result:\\
+	$1\,+\,5\,=\,6$\\
+	$32\,*\,6\,=\,192$\\\\
+	Come on, try it!
+	
+	\section{Plugins}
+	
+	Fu Bar provides a plugin interface. Plugins are invoked by one of these
+	syntaxes:
+	\begin{verbatim}
+	:invoke plugin-name param-list
+	/plugin-name param-list
+	\end{verbatim}
+	
+	\subsection{Writing own plugins}
+	
+	Fu Bar wants its plugins to have the following exported procedures:
+	\begin{description}
+	  \item[void \_\_cdecl fubar\_plugin\_transmit(char *params)]
+	    Receives the arguments. Do not implement the main skills here!
+	    Always remember, that this procedure may be called multiple times
+	    before invocation.
+	  \item[void \_\_cdecl fubar\_plugin\_invoke()]
+	    Implement all the plugin's functionality here.
+	\end{description}
+	
+	A short example in Pascal:
+	\begin{verbatim}
+	library example;
+	
+	var params: string;
+	
+	procedure transmit(const s: PChar); cdecl;
+	begin
+	  params := params + ' ' + string(s);
+	end;
+	
+	procedure invoke; cdecl;
+	begin
+	  Writeln('Hello World!');
+	  Writeln(params);
+	end;
+	
+	exports
+	  transmit name 'fubar_plugin_transmit',
+	  invoke name 'fubar_plugin_invoke';
+	  
+	initialization
+	  params := '';
+	end.
+	\end{verbatim}
+	
+	Compile it, and you'll receive a file named \textit{libexample.so} (Unix) 
+	or \textit{example.dll} (Windows).\\
+	Now add your plugin to \textit{libplugs.dat}:
+	\begin{verbatim}
+	example: /etc/fubar/libexample.so
+	\end{verbatim}
+	If possible, the plugin should be in the global configuration path of Fu 
+	Bar. On Linux, it's /etc/fubar/ in the most cases. Now don't forget to
+	reinstall Fu Bar with the new \textit{libplugs.dat} (\texttt{sudo make 
+	install}) and erase your local copy (usually in $\sim$/.config/fubar/)
+	using \texttt{make erasecfg}.
+	
+	\subsection{tcal - the integrated task-based calendar}
+	
+	tcal is a task-based calendar, shipped as a plugin for fubar.
+	To queue a task, use
+	\begin{verbatim}
+	/tcal queue task param-list
+	/queue task param-list
+	/task param-list
+	\end{verbatim}
+	
+	For example, the \textit{dayofweek} task can be queued by
+	\begin{verbatim}
+	/tcal queue dayofweek 2011-11-11
+	/queue dayofweek 2011-11-11
+	/dayofweek 2011-11-11
+	\end{verbatim}
+	
+	To run all queued tasks, enter
+	\begin{verbatim}
+	/tcal apply
+	/apply
+	\end{verbatim}
+	
+	\section{Get}
+	
+	\subsection{Using Git}
+	
+	Simply clone the repository:
+	\begin{verbatim}
+	git clone git://github.com/implementor/Fu-Bar.git fubar
+	\end{verbatim}
+	Later, you can easily check for updates:
+	\begin{verbatim}
+	cd fubar
+	git pull origin master
+	\end{verbatim}
+	
+	\subsection{Packed and compressed}
+	
+	Get it here: \url{https://github.com/implementor/Fu-Bar/zipball/master}
+	
+	\section{Build \& Install}
+	
+	On Linux, you can easily build Fu Bar using GNU \texttt{make}.
+	Other Unixes may also work, but aren't tested.
+	The packages \texttt{make} and \texttt{fpc} are required.
+	
+	\begin{description}
+	  \item[make build] Build Fu Bar.
+	  \item[make clean] Clean up the directory.
+	  \item[make erasecfg] Erase your local configuration.
+	  \item[sudo make install] Installs Fu Bar to \$(INST\_DEST)
+	  \item[sudo make uninstall] Uninstall Fu bar from \$(INST\_DEST)
+	  \item[make run] Run Fu Bar from the scratch.
+	\end{description}
+	
+	If \texttt{wine} is available, and you have installed \texttt{FPC for
+	Win32} using it, the following targets are also usable:
+	
+	\begin{description}
+	  \item[make build4win] Build Fu Bar for Win32
+	  \item[make buildX] Build Fu Bar for Win32 AND your current platform.
+	  \item[make run4win] Run the Win32 executable
+	\end{description}
+	
+	\section{Run}
+	
+	After installation, you should be able to call \texttt{fubar} from
+	the command-line.\\
+	\texttt{fubar --help} reveals this:
+	
+	\begin{verbatim}
+	Fu Bar, a term-parsing calculator.
+	Copyright (c) 2011 Marvin Cohrs
+	Distributed under the terms of the GNU General Public License.
+
+	Usage: fubar [-i|--instant] [-q|--quiet] [--noman] [[-t|--term] TERM]
+       fubar --safe [[-t|--term] TERM]
+       fubar --about TOPIC
+       fubar --help
+
+	  -i --instant      Do not load my ~/.config/fubar/autoload
+	  -q --quiet        Be quiet.
+	  -t --term TERM    Calculate the given term.
+	     --noman        Disable built-in manual.
+	     --safe         Safe mode, does not read or modify any file.
+	     --help         This help screen.
+	     --about TOPIC  Displays help about a specific topic.
+     
+	--term implies --quiet
+	--safe implies --quiet, --instant, --noman
+	--help, --about deny --safe, --noman
+	\end{verbatim}
+	
+	Fu Bar also provides a manpage. Try \texttt{man fubar} ;)
+
+\end{document}
