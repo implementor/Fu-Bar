@@ -1,0 +1,19 @@
+object Calframe: TCalframe
+  Left = 0
+  Height = 393
+  Top = 0
+  Width = 673
+  ClientHeight = 393
+  ClientWidth = 673
+  TabOrder = 0
+  DesignLeft = 292
+  DesignTop = 326
+  object Label1: TLabel
+    Left = 158
+    Height = 19
+    Top = 133
+    Width = 96
+    Caption = 'A tcal frame.'
+    ParentColor = False
+  end
+end

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1317160708"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -gl -WG -vewnhi -l -Fi/home/implementor/Dropbox/Development/Ragepub/lib/x86_64-linux -Fu/home/implementor/Dropbox/Development/FUbar -Fu/usr/lib/lazarus/0.9.30/lcl/units/x86_64-linux -Fu/usr/lib/lazarus/0.9.30/lcl/units/x86_64-linux/gtk2 -Fu/usr/lib/lazarus/0.9.30/packager/units/x86_64-linux -Fu/home/implementor/Dropbox/Development/Ragepub/ -Fu. -FU/home/implementor/Dropbox/Development/Ragepub/lib/x86_64-linux/ -oragepub -dLCL -dLCLgtk2 ragepub.lpr"/>
+</CONFIG>

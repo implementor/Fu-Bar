@@ -1,0 +1,51 @@
+object WelcomeFrame: TWelcomeFrame
+  Left = 0
+  Height = 393
+  Top = 0
+  Width = 623
+  ClientHeight = 393
+  ClientWidth = 623
+  TabOrder = 0
+  DesignLeft = 448
+  DesignTop = 341
+  object Label1: TLabel
+    Left = 66
+    Height = 38
+    Top = 70
+    Width = 155
+    Caption = 'Welcome!'
+    Font.Height = -31
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 66
+    Height = 19
+    Top = 119
+    Width = 427
+    Caption = 'Rage Pub is a graphical environment for the fubar cluster.'
+    ParentColor = False
+  end
+  object BackendList: TListBox
+    Left = 66
+    Height = 119
+    Top = 154
+    Width = 427
+    Items.Strings = (
+      'fubar - a term-parsing calculator'
+      'fubar - a term-parsing calculator (multi)'
+      'tcal - a task-based calendar'
+    )
+    ItemHeight = 24
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 367
+    Height = 30
+    Top = 280
+    Width = 126
+    Caption = 'Go    -->'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+end

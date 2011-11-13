@@ -1,0 +1,14 @@
+{
+  a #= 1+1; 
+  b = a*eval(6);
+  { 
+    c #= 67; 
+    d = c*b;;
+  }
+  f = i; 
+  g #= $.8;
+  x = a+b; 
+  y = eval(a+b);
+  z #= a+b; 
+  damn #= full(tau);
+}

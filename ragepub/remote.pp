@@ -1,0 +1,125 @@
+{/    Copyright 2011 Marvin Cohrs
+//
+//    This file is part of Rage Pub.
+//
+//    Rage Pub is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.}
+{$mode objfpc}{$longstrings on}
+
+unit remote;
+
+interface
+
+uses baseunix, unix, prayerlist, sysutils;
+
+type
+  TStringList = specialize TPrayerList<string>;
+  TRemoteControl = class
+  private
+    FBuffer: TStringList;
+  public
+    constructor Create; reintroduce; virtual;
+    destructor Destroy; override;
+    procedure RunCalculation(const term: string);
+    procedure RunExplanation(const term: string);
+    function ReadLine: string;
+    function EndOfBuffer: Boolean;
+  end;
+  EPipeFailed = class(Exception);
+
+implementation
+
+constructor TRemoteControl.Create;
+begin
+  inherited;
+  FBuffer := TStringList.Create(0, '');
+end;
+
+destructor TRemoteControl.Destroy;
+begin
+  FBuffer.Free;
+  inherited;
+end;
+
+procedure TRemoteControl.RunCalculation(const term: string);
+var FRead, FWrite, FErr: System.Text; code: cint; s: string;
+begin
+  try
+    FBuffer.Clear;
+    code := AssignStream(FRead,FWrite,FErr,'/usr/local/bin/fubar',['--term='+term]);
+    if code=-1 then begin
+      code := FpGetErrno;
+      case code of
+      esysemfile: s:='sys_emfile';
+      esysenfile: s:='sys_emfile';
+      else s:='unknown';
+      end;
+      raise EPipeFailed.Create('Error Code: '+IntToStr(code)+' '+s);
+    end;
+    while not eof(FRead) do begin
+      Readln(FRead,s);
+      FBuffer.Add(s)
+    end;
+    while not eof(FErr) do begin
+      Readln(FErr,s);
+      FBuffer.Add(s)
+    end
+  finally
+    Close(FRead); Close(FWrite);
+    Close(FErr)
+  end
+end;
+
+procedure TRemoteControl.RunExplanation(const term: string);
+var FRead, FWrite, FErr: System.Text; code: cint; s: string;
+begin
+  try
+    FBuffer.Clear;
+    code := AssignStream(FRead,FWrite,FErr,'/usr/local/bin/fubar',['--term=:explain '+term]);
+    if code=-1 then begin
+      code := FpGetErrno;
+      case code of
+      esysemfile: s:='sys_emfile';
+      esysenfile: s:='sys_emfile';
+      else s:='unknown';
+      end;
+      raise EPipeFailed.Create('Error Code: '+IntToStr(code)+' '+s);
+    end;
+    while not eof(FRead) do begin
+      Readln(FRead,s);
+      FBuffer.Add(s)
+    end;
+    while not eof(FErr) do begin
+      Readln(FErr,s);
+      FBuffer.Add(s)
+    end
+  finally
+    Close(FRead); Close(FWrite);
+    Close(FErr)
+  end
+end;
+
+function TRemoteControl.Readline: string;
+begin
+  if not EndOfBuffer then begin
+    Result := FBuffer[0];
+    FBuffer.RemoveAt(0)
+  end;
+end;
+
+function TRemoteControl.EndOfBuffer: Boolean;
+begin
+  Result := FBuffer.Count=0;
+end;
+
+end.

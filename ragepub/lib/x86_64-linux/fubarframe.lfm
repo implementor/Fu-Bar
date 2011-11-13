@@ -1,0 +1,81 @@
+object CalcFrame: TCalcFrame
+  Left = 0
+  Height = 481
+  Top = 0
+  Width = 734
+  ClientHeight = 481
+  ClientWidth = 734
+  TabOrder = 0
+  DesignLeft = 380
+  DesignTop = 271
+  object Panel1: TPanel
+    Left = 0
+    Height = 33
+    Top = 448
+    Width = 734
+    Align = alBottom
+    ClientHeight = 33
+    ClientWidth = 734
+    TabOrder = 0
+    object ActionCombo: TComboBox
+      Left = 1
+      Height = 31
+      Top = 1
+      Width = 148
+      Align = alLeft
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'Calculate'
+        'Explain'
+        'Manual'
+      )
+      Style = csDropDownList
+      TabOrder = 1
+      Text = 'Calculate'
+    end
+    object TermEdit: TEdit
+      Left = 149
+      Height = 31
+      Top = 1
+      Width = 539
+      Align = alClient
+      Font.Name = 'courier new [monotype]'
+      Font.Pitch = fpFixed
+      Font.Quality = fqAntialiased
+      OnKeyPress = TermEditKeyPress
+      ParentFont = False
+      TabOrder = 0
+    end
+    object EnterButton: TButton
+      Left = 688
+      Height = 31
+      Top = 1
+      Width = 45
+      Align = alRight
+      Caption = '-->'
+      OnClick = EnterButtonClick
+      TabOrder = 2
+    end
+  end
+  object OutMemo: TMemo
+    Left = 0
+    Height = 448
+    Top = 0
+    Width = 734
+    Align = alClient
+    BorderStyle = bsNone
+    Font.Height = -16
+    Font.Name = 'impact [monotype]'
+    Font.Pitch = fpFixed
+    Font.Quality = fqAntialiased
+    Lines.Strings = (
+      'Rage Pub - fubar'
+      '------------------------------'
+    )
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssAutoVertical
+    TabOrder = 1
+  end
+end
