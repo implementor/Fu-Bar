@@ -1,0 +1,57 @@
+Fu Bar -- Changelog
+======================================
+
+Fu Bar 1.4
+------------
+Fu Bar now allows to create plugins.
+tcal is shipped as a first one.
+In addition, Fu Bar got a manpage.
+
+Fu Bar 1.3
+------------
+Fu Bar now allows command-line arguments.
+Autoload.dat moved to config directory.
+
+23rd Oct, 2011
+------------
+John McCarthy dies.
+Rest in Peace.
+The inventor of LISP and a major contributor to the field of AI.
+
+8/9th Oct, 2011
+------------
+Dennis Ritchie dies.
+Rest In Peace.
+His developments: A, B, BCPL, C, UNIX
+And he invented the hello world program.
+
+Fu Bar 1.2
+------------
+Function domains are now individually customizable.
+The new keywords 'complex', 'rational', 'integer' and 'natural' are introduced.
+
+Fu Bar 1.1a c2, c3, c4
+------------
+Fixed some bugs, tidied up.
+Introduced explanations for sum(...) and product(...).
+Reinforced softcode sqrt() by removing its built-in equivalent.
+
+Fu Bar 1.1a
+------------
+Sinus and Cosinus are now softcoded.
+
+Fu Bar 1.1 c2, c3
+------------
+Fixed some 'complex' bugs.
+
+Fu Bar 1.1
+------------
+Introduced complex numbers.
+
+Fu Bar 1.0a
+------------
+Renamed some functions.
+
+Fu Bar 1.0
+------------
+First Release

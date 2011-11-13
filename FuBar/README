@@ -1,0 +1,66 @@
+Fu Bar, an interpreting calculator.
+
+This program comes with ABSOLUTELY NO WARRANTY;
+
+Fu Bar is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The file 'prayerlist.pas' is taken from the 'Prayer' project.
+
+Fu Bar: Copyright (c) 2011 Marvin Cohrs
+Prayer: Copyright (c) 2011 Marvin Cohrs
+marvin [dot] cohrs [at] hotmail [dot] de
+marvin [dot] cohrs [at] gmx [dot] net
+
+A copy of the license is shipped in the file 'COPYING'.
+
+Files:
+    -> fubar.pas        Fu Bar      Source  GPL  Marvin Cohrs
+    -> interpreter.pas  Fu Bar      Source  GPL  Marvin Cohrs
+    -> expressions.pas  Fu Bar      Source  GPL  Marvin Cohrs
+    -> cradle.pas       Fu Bar      Source  GPL  Marvin Cohrs
+    -> sqrt.pas         Fu Bar      Source  GPL  Marvin Cohrs
+    -> vars.pas         Fu Bar      Source  GPL  Marvin Cohrs
+    -> cmd.pas          Fu Bar      Source  GPL  Marvin Cohrs
+    -> buffer.pas       Fu Bar      Source  GPL  Marvin Cohrs
+    -> cmplx.pas        Fu Bar      Source  GPL  Marvin Cohrs
+    -> explain.pas      Fu Bar      Source  GPL  Marvin Cohrs
+    -> tree.pas         Fu Bar      Source  GPL  Marvin Cohrs
+    -> arguments.pas    Fu Bar      Source  GPL  Marvin Cohrs
+    -> autoload.dat     Fu Bar      Source  GPL  Marvin Cohrs
+    -> prayerlist.pas   Prayer      Source  GPL  Marvin Cohrs
+    -> fubar            Fu Bar      Binary (amd64/linux)
+    -> fubar.exe        Fu Bar      Binary (i386/windows)
+    -> help.dat         Fu Bar      RT Doc  GFDL Marvin Cohrs
+    -> fubar.tex        Fu Bar      Doc     GFDL Marvin Cohrs
+    -> fubar.pdf        Fu Bar      Doc     GFDL Marvin Cohrs
+
+Thanks to Jack W. Crenshaw, for writing the great compiler-construction
+tutorial "Let's Build a Compiler!"
+
+And - Dear User - I've hidden some easter eggs. Come on, find them ;)
+
+
+Usage: fubar [-i|--instant] [-q|--quiet] [[-t|--term] TERM]
+       fubar --safe [[-t|--term] TERM]
+       fubar --about TOPIC
+       
+  -i --instant        Do not load my ~/.config/fubar/autoload
+  -q --quiet          Be quiet.
+  -t --term TERM      Calculate the given term.
+     --safe           Safe-mode, does not read or modify any file.
+     --help           Help screen.
+     --about TOPIC    Help about a specific topic.
+     
+--term implies -q
+--safe implies -qi
